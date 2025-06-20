@@ -15,9 +15,5 @@ TUM Science Hackathon 2025 - The Red Embedding
     conda activate hack
     ```
 
-3. Install:
-    ```bash
-    cd torchlbm
-    pip install -e .
-    ```
+
 
