@@ -1,21 +1,32 @@
-[project]
-name = "tum-science-hack25"
-version = "0.1.0"
-description = ""
-authors = [
-    {name = "Siva Karthikeya",email = "writetokarthikeya99@gmail.com"}
-]
-readme = "README.md"
-requires-python = ">=3.12"
-dependencies = [
-    "numpy (>=2.3.0,<3.0.0)",
-    "pandas (>=2.3.0,<3.0.0)",
-    "scikit-learn (>=1.7.0,<2.0.0)",
-    "matplotlib (>=3.10.3,<4.0.0)",
-    "fastapi (>=0.115.13,<0.116.0)"
-]
-
-
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "HumanitarianDemining"
+version = "0.1.0"
+description = "Interactive visualization and backend API for demining operations"
+authors = [{ name = "Jane Doe", email = "jane.doe@example.com" }]
+license = { file = "LICENSE" }
+readme = "README.md"
+dependencies = [
+    "torch",
+    "numpy",
+    "pandas",
+    "matplotlib",
+    "fastapi",
+    "uvicorn",
+    "seaborn",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "black",
+    "flake8",
+    "coverage",
+]
+cuda = ["torch @ https://download.pytorch.org/whl/cu121"]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
