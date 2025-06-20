@@ -9,23 +9,15 @@ TUM Science Hackathon 2025 - The Red Embedding
     cd tum-science-hack25
     ```
 
-2. Install dependencies:
-    ```
-    poetry install
+2. Create conda environment:
+    ```bash
+    conda create --name hack python=3.12
+    conda activate hack
     ```
 
-3. Activate the virtual environment (Windows):
-    ```
-    poetry env info --path
-    ```
-    Copy the output path and run:
-    ```
-    <output-path>\Scripts\activate.bat
-    ```
-    (For Linux/macOS: `source <output-path>/bin/activate`)
-
-4. Run the code:
-    ```
-    python -m src.main
+3. Install:
+    ```bash
+    cd torchlbm
+    pip install -e .
     ```
 
