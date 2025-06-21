@@ -1,3 +1,3 @@
-FROM postgres:16.2-bullseye
+FROM postgis/postgis:16-3.5
 
 EXPOSE 5432
