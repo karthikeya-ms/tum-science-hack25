@@ -2,9 +2,10 @@ import os
 import io
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, FileResponse
 
 from map_generator import generate_risk_map, generate_risk_map_for_partner
+from pdf_report_generator import create_pdf
 
 app = FastAPI()
 
@@ -47,3 +48,8 @@ def get_risk_map(partner: str = Query(None, regex="^[ABC]$")):
     if not _cached_full:
         raise HTTPException(500, "Map not available")
     return StreamingResponse(io.BytesIO(_cached_full), media_type="image/png")
+
+@app.post("/generate-pdf")
+def generate_pdf():
+    output_path = create_pdf()
+    return FileResponse(output_path, filename="ngo_activity_report.pdf", media_type="application/pdf")
