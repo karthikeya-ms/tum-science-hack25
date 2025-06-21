@@ -8,10 +8,6 @@ export default function Login({ onLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!username.trim() || !password.trim()) {
-      alert("Please enter both username and password");
-      return;
-    }
     // Pass partner through for both NGO and Team Lead roles
     onLogin({ 
       role, 
@@ -24,6 +20,7 @@ export default function Login({ onLogin }) {
     <div className="min-h-screen flex items-center justify-center bg-gray-800">
       <div className="bg-gray-700 p-8 rounded-lg w-full max-w-sm space-y-6">
         <h1 className="text-2xl font-bold text-white text-center">Sign In</h1>
+        
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Role */}
           <div>

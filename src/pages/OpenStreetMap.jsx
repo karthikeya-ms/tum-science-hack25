@@ -30,23 +30,49 @@ function MapResizer() {
 export default function OpenStreetMap({ 
   partners = ['A', 'B', 'C'], // Default to all partners
   showLegend = true,
-  title = "Humanitarian Demining"
+  title = "Humanitarian Demining",
+  filterLeadersByPartner = null, // New prop to filter leaders by partner
+  riskData = null, // New prop for risk-based data overlay
+  getRiskBasedStyle = null, // New prop for risk-based styling function
+  onEachRiskFeature = null, // New prop for risk feature popup handler
+  riskLoading = false // New prop for risk data loading state
 }) {
   const center = [49.76, 36.21];
   const mapRef = useRef();
   const [partnerAData, setPartnerAData] = useState(null);
   const [partnerBData, setPartnerBData] = useState(null);
   const [partnerCData, setPartnerCData] = useState(null);
+  const [leaderData, setLeaderData] = useState({}); // New state for leader data
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [loadingStatus, setLoadingStatus] = useState({
     A: false,
     B: false,
-    C: false
+    C: false,
+    leaders: false // New loading status for leaders
   });
   const [mapReady, setMapReady] = useState(false);
   const [terrainInfo, setTerrainInfo] = useState(null);
   const [clickedCoords, setClickedCoords] = useState(null);
+
+  // Define which leaders belong to which partners
+  const partnerLeaders = {
+    'A': ['A1', 'A2', 'A3'],
+    'B': ['B1', 'B2'],
+    'C': ['C1']
+  };
+
+  // Get filtered leaders based on current partner
+  const getFilteredLeaders = () => {
+    if (!filterLeadersByPartner) {
+      // If no filter, show all leaders
+      return Object.values(partnerLeaders).flat();
+    }
+    // Return only leaders for the specified partner
+    return partnerLeaders[filterLeadersByPartner] || [];
+  };
+
+  const filteredLeaders = getFilteredLeaders();
 
   // Normalize partners prop to always be an array
   const activePartners = Array.isArray(partners) ? partners : [partners];
@@ -60,7 +86,7 @@ export default function OpenStreetMap({
       }, 100);
       return () => clearTimeout(timer);
     }
-  }, [partnerAData, partnerBData, partnerCData, mapReady]);
+  }, [partnerAData, partnerBData, partnerCData, leaderData, mapReady]);
 
   // // Function to get terrain information for coordinates
   // const getTerrainInfo = async (lat, lng) => {
@@ -138,21 +164,21 @@ export default function OpenStreetMap({
         console.log(`Features count for Partner ${partner}:`, data.features?.length || 0);
         
         if (data.features && data.features.length > 0) {
-          // Optimize: Take only every 5th feature for faster rendering
-          const optimizedData = {
+          // Use all features without skipping for efficiency
+          const fullData = {
             ...data,
-            features: data.features.filter((_, index) => index % 5 === 0)
+            features: data.features
           };
           
-          console.log(`Optimized features count for Partner ${partner}:`, optimizedData.features.length, 'from original:', data.features.length);
+          console.log(`Full features count for Partner ${partner}:`, fullData.features.length);
           
           // Set data based on partner
           if (partner === 'A') {
-            setPartnerAData(optimizedData);
+            setPartnerAData(fullData);
           } else if (partner === 'B') {
-            setPartnerBData(optimizedData);
+            setPartnerBData(fullData);
           } else if (partner === 'C') {
-            setPartnerCData(optimizedData);
+            setPartnerCData(fullData);
           }
         }
         
@@ -161,6 +187,41 @@ export default function OpenStreetMap({
         console.error(`Error fetching Partner ${partner} data:`, err);
         setError(prev => ({ ...prev, [partner]: err.message }));
         setLoadingStatus(prev => ({ ...prev, [partner]: false }));
+      }
+    };
+
+    const fetchLeaderData = async () => {
+      try {
+        console.log('Fetching Leader data...');
+        setLoadingStatus(prev => ({ ...prev, leaders: true }));
+        
+        const response = await fetch('http://localhost:8000/risk-map/geojson/leaders');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Leader data received:', data);
+        
+        // Use all leader data without skipping for efficiency
+        // Only process leaders that are in the filtered list
+        const fullLeaderData = {};
+        filteredLeaders.forEach(leader => {
+          if (data[leader] && data[leader].features && data[leader].features.length > 0) {
+            fullLeaderData[leader] = {
+              ...data[leader],
+              features: data[leader].features
+            };
+            console.log(`Full features count for Leader ${leader}:`, fullLeaderData[leader].features.length);
+          }
+        });
+        
+        setLeaderData(fullLeaderData);
+        setLoadingStatus(prev => ({ ...prev, leaders: false }));
+      } catch (err) {
+        console.error('Error fetching Leader data:', err);
+        setError(prev => ({ ...prev, leaders: err.message }));
+        setLoadingStatus(prev => ({ ...prev, leaders: false }));
       }
     };
 
@@ -174,8 +235,11 @@ export default function OpenStreetMap({
       if (!activePartners.includes('B')) setPartnerBData(null);
       if (!activePartners.includes('C')) setPartnerCData(null);
       
-      // Fetch data only for active partners
-      const fetchPromises = activePartners.map(partner => fetchPartnerData(partner));
+      // Fetch data for active partners and leaders
+      const fetchPromises = [
+        ...activePartners.map(partner => fetchPartnerData(partner)),
+        fetchLeaderData() // Add leader data fetching
+      ];
       await Promise.all(fetchPromises);
       
       setLoading(false);
@@ -192,6 +256,13 @@ export default function OpenStreetMap({
           if (activePartners.includes('A') && partnerAData) dataToCheck.push(partnerAData);
           if (activePartners.includes('B') && partnerBData) dataToCheck.push(partnerBData);
           if (activePartners.includes('C') && partnerCData) dataToCheck.push(partnerCData);
+          
+          // Also include leader data for bounds calculation
+          Object.values(leaderData).forEach(data => {
+            if (data && data.features) {
+              dataToCheck.push(data);
+            }
+          });
           
           dataToCheck.forEach(data => {
             if (data && data.features) {
@@ -216,7 +287,7 @@ export default function OpenStreetMap({
     };
 
     fetchAllData();
-  }, [activePartners.join(',')]); // Re-run when partners change
+  }, [activePartners.join(','), filteredLeaders.join(',')]); // Re-run when partners or filtered leaders change
 
   // Handle map ready event
   const handleMapCreated = (map) => {
@@ -228,32 +299,90 @@ export default function OpenStreetMap({
     }, 100);
   };
 
-  // Different styles for each partner
+  // Different styles for each partner - no visible outlines
   const getGeoJsonStyle = (partner) => {
     const styles = {
       A: {
         fillColor: '#ff0000',
-        weight: 1,
-        opacity: 0.6,
+        weight: 0,
+        opacity: 0,
         color: '#ff0000',
         fillOpacity: 0.4
       },
       B: {
         fillColor: '#0000ff',
-        weight: 1,
-        opacity: 0.6,
+        weight: 0,
+        opacity: 0,
         color: '#0000ff',
         fillOpacity: 0.4
       },
       C: {
         fillColor: '#000000',
-        weight: 1,
-        opacity: 0.6,
+        weight: 0,
+        opacity: 0,
         color: '#000000',
         fillOpacity: 0.4
       }
     };
     return styles[partner] || styles.A;
+  };
+
+  // Different styles for each leader - no visible outlines
+  const getLeaderGeoJsonStyle = (leader) => {
+    const styles = {
+      // Partner A leaders - shades of red
+      'A1': {
+        fillColor: '#ff4444',
+        weight: 0,
+        opacity: 0,
+        color: '#cc0000',
+        fillOpacity: 0.5
+      },
+      'A2': {
+        fillColor: '#ff7777',
+        weight: 0,
+        opacity: 0,
+        color: '#cc0000',
+        fillOpacity: 0.5
+      },
+      'A3': {
+        fillColor: '#ffaaaa',
+        weight: 0,
+        opacity: 0,
+        color: '#cc0000',
+        fillOpacity: 0.5
+      },
+      // Partner B leaders - shades of blue
+      'B1': {
+        fillColor: '#4444ff',
+        weight: 0,
+        opacity: 0,
+        color: '#0000cc',
+        fillOpacity: 0.5
+      },
+      'B2': {
+        fillColor: '#7777ff',
+        weight: 0,
+        opacity: 0,
+        color: '#0000cc',
+        fillOpacity: 0.5
+      },
+      // Partner C leaders - shades of green
+      'C1': {
+        fillColor: '#44ff44',
+        weight: 0,
+        opacity: 0,
+        color: '#00cc00',
+        fillOpacity: 0.5
+      }
+    };
+    return styles[leader] || {
+      fillColor: '#888888',
+      weight: 0,
+      opacity: 0,
+      color: '#666666',
+      fillOpacity: 0.5
+    };
   };
 
   const onEachFeature = (partner) => (feature, layer) => {
@@ -267,7 +396,25 @@ export default function OpenStreetMap({
         <p><strong>Grid ID:</strong> ${gridId}</p>
         <p><strong>Risk Level:</strong> ${riskPercent}%</p>
         <p><strong>Partner:</strong> ${feature.properties.partner || partner}</p>
-        <p><em>Showing sample of grid cells for performance</em></p>
+        <p><em>All operational grid cells displayed</em></p>
+      </div>
+    `);
+  };
+
+  const onEachLeaderFeature = (leader) => (feature, layer) => {
+    const risk = feature.properties.risk || 0;
+    const riskPercent = (risk * 100).toFixed(1);
+    const gridId = feature.properties.id || 'Unknown';
+    const partner = feature.properties.partner || 'Unknown';
+    
+    layer.bindPopup(`
+      <div>
+        <h4>Leader ${leader} Region</h4>
+        <p><strong>Grid ID:</strong> ${gridId}</p>
+        <p><strong>Risk Level:</strong> ${riskPercent}%</p>
+        <p><strong>Partner:</strong> ${partner}</p>
+        <p><strong>Leader:</strong> ${leader}</p>
+        <p><em>All operational grid cells displayed</em></p>
       </div>
     `);
   };
@@ -277,6 +424,19 @@ export default function OpenStreetMap({
     if (activePartners.includes('A') && partnerAData) total += partnerAData.features?.length || 0;
     if (activePartners.includes('B') && partnerBData) total += partnerBData.features?.length || 0;
     if (activePartners.includes('C') && partnerCData) total += partnerCData.features?.length || 0;
+    
+    // Add leader data features
+    Object.values(leaderData).forEach(data => {
+      if (data && data.features) {
+        total += data.features.length;
+      }
+    });
+    
+    // Add risk data features
+    if (riskData && riskData.features) {
+      total += riskData.features.length;
+    }
+    
     return total;
   };
 
@@ -285,7 +445,7 @@ export default function OpenStreetMap({
   };
 
   // Create a unique key for the map to force re-render when needed
-  const mapKey = `map-${activePartners.join('-')}-${getTotalFeatures()}`;
+  const mapKey = `map-${activePartners.join('-')}-${getTotalFeatures()}-${Object.keys(leaderData).length}`;
 
   return (
     <div className="w-full h-96 rounded-lg overflow-hidden border border-gray-600 relative">
@@ -369,6 +529,32 @@ export default function OpenStreetMap({
               />
             </LayersControl.Overlay>
           )}
+
+          {/* Leader Data Overlays */}
+          {filteredLeaders.map(leader => (
+            leaderData[leader] && !loadingStatus.leaders && mapReady && (
+              <LayersControl.Overlay key={leader} name={`Leader ${leader}`}>
+                <GeoJSON
+                  key={`leader-${leader}-${leaderData[leader].features?.length}-${mapReady}`}
+                  data={leaderData[leader]}
+                  style={getLeaderGeoJsonStyle(leader)}
+                  onEachFeature={onEachLeaderFeature(leader)}
+                />
+              </LayersControl.Overlay>
+            )
+          ))}
+
+          {/* Risk Data Overlay */}
+          {riskData && getRiskBasedStyle && onEachRiskFeature && !riskLoading && mapReady && (
+            <LayersControl.Overlay name={`Partner ${filterLeadersByPartner || 'All'} Risk Assessment`}>
+              <GeoJSON
+                key={`risk-data-${riskData.features?.length}-${mapReady}`}
+                data={riskData}
+                style={getRiskBasedStyle}
+                onEachFeature={onEachRiskFeature}
+              />
+            </LayersControl.Overlay>
+          )}
         </LayersControl>
         
         <Marker position={center}>
@@ -383,6 +569,24 @@ export default function OpenStreetMap({
                 {activePartners.includes('A') && partnerAData && <div style={{color: '#ff0000'}}>Partner A: {partnerAData.features?.length || 0} cells</div>}
                 {activePartners.includes('B') && partnerBData && <div style={{color: '#0000ff'}}>Partner B: {partnerBData.features?.length || 0} cells</div>}
                 {activePartners.includes('C') && partnerCData && <div style={{color: '#000000'}}>Partner C: {partnerCData.features?.length || 0} cells</div>}
+                {Object.keys(leaderData).length > 0 && (
+                  <div style={{ marginTop: '10px' }}>
+                    <div><strong>Leaders:</strong></div>
+                    {filteredLeaders.map(leader => (
+                      <div key={leader} style={{ fontSize: '12px', marginLeft: '10px' }}>
+                        {leader}: {leaderData[leader]?.features?.length || 0} cells
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {riskData && riskData.features && (
+                  <div style={{ marginTop: '10px' }}>
+                    <div><strong>Risk Assessment:</strong></div>
+                    <div style={{ fontSize: '12px', marginLeft: '10px', color: '#ff0000' }}>
+                      Risk Areas: {riskData.features.length} cells
+                    </div>
+                  </div>
+                )}
               </div>
             )}
             <div style={{ marginTop: '10px', fontSize: '12px', fontStyle: 'italic' }}>
@@ -433,6 +637,8 @@ export default function OpenStreetMap({
             {getActiveLoadingPartners().map(partner => (
               <div key={partner}>Loading Partner {partner}...</div>
             ))}
+            {loadingStatus.leaders && <div>Loading Leaders...</div>}
+            {riskLoading && <div>Loading Risk Assessment...</div>}
           </div>
         </div>
       )}
