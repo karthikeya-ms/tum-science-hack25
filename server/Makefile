@@ -1,8 +1,19 @@
 seed:
 	- docker compose run --rm --entrypoint="python -c 'from app.utils.seeds import seed; seed()'" server
+
+seed-sectors:
+	- docker compose run --rm -e POSTGRESQL_HOST=db --entrypoint="python seed_sectors.py" server
+
+verify-sectors:
+	- docker compose run --rm -e POSTGRESQL_HOST=db --entrypoint="python verify_sectors.py" server
+
+clear-sectors:
+	- docker compose run --rm -e POSTGRESQL_HOST=db --entrypoint="python verify_sectors.py clear" server
+
 test:
 	- docker compose run --rm --entrypoint="pytest tests" server
+
 clean:
 	docker compose run --rm --entrypoint="python -c 'from app.utils.clean import clean; clean()'" server
 
-.PHONY: seed test clean
+.PHONY: seed seed-sectors verify-sectors clear-sectors test clean
