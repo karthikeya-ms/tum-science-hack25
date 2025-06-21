@@ -1,114 +1,93 @@
 // src/pages/GovOverview.jsx
+
 import React, { useState } from "react";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import OpenStreetMap from "./OpenStreetMap";
+import {
+  RadialBarChart,
+  RadialBar,
+  Legend,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
 
 export default function GovOverview() {
   const stats = [
-    { label: "Area Cleared", value: "45 000 ha" },
-    { label: "Population Impacted", value: "600 000" },
-    { label: "Economic Value", value: "$80 M" },
+    { label: "Area Cleared", value: 45000, unit: "ha", color: "#00d8c3" },
+    { label: "Population Impacted", value: 600000, unit: "", color: "#FFD93D" },
+    { label: "Economic Value", value: 80, unit: "M$", color: "#FF6B6B" },
   ];
 
-  const [mapSrc, setMapSrc] = useState(null);
-  const [loading, setLoading] = useState(false);
-
-  // const fetchMap = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const res = await fetch("http://localhost:8000/risk-map/png");
-  //     const blob = await res.blob();
-  //     setMapSrc(URL.createObjectURL(blob));
-  //   } catch (err) {
-  //     console.error(err);
-  //     alert("Failed to generate map");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
   return (
-    <div className="max-w-4xl mx-auto space-y-8 text-white">
+    <div className="min-h-screen bg-[#0E1324] p-6 space-y-8 text-[#E0E6ED]">
       {/* Header */}
-      <header className="flex items-center justify-between">
+      <header className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold">National Overview</h1>
-          <p className="text-gray-400">High-level metrics for decision makers</p>
+          <p className="text-[#7A8FA6]">High-level metrics for decision makers</p>
         </div>
-        {/* <button
-          //onClick={fetchMap}
-          disabled={loading}
-          className={`px-4 py-2 rounded ${
-            loading ? "bg-gray-600" : "bg-blue-600 hover:bg-blue-500"
-          }`}
-        >
-          {loading ? "Generating…" : "Generate Risk Map"}
-        </button> */}
       </header>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {stats.map((s) => (
-          <div
-            key={s.label}
-            className="bg-gray-700 p-4 rounded-lg text-center"
-          >
-            <div className="text-sm text-gray-400">{s.label}</div>
-            <div className="mt-2 text-2xl font-semibold">{s.value}</div>
-          </div>
-        ))}
+      {/* Neon-Gauge Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        {stats.map((s) => {
+          // for radial bars we need a 0–max scale; pick a sensible max
+          const domainMax = s.label === "Economic Value" ? 100 : s.value * 1.2;
+          const data = [{ name: s.label, value: s.value, fill: s.color }];
+          return (
+            <div
+              key={s.label}
+              className="bg-[#1B2330] p-4 rounded-2xl shadow-md flex flex-col items-center"
+            >
+              <ResponsiveContainer width="100%" height={150}>
+                <RadialBarChart
+                  cx="50%"
+                  cy="50%"
+                  innerRadius="60%"
+                  outerRadius="100%"
+                  barSize={12}
+                  data={data}
+                  startAngle={180}
+                  endAngle={0}
+                >
+                  <RadialBar
+                    background
+                    clockWise
+                    dataKey="value"
+                    cornerRadius={6}
+                    minAngle={15}
+                  />
+                  <Legend
+                    iconSize={0}
+                    layout="vertical"
+                    verticalAlign="middle"
+                    align="center"
+                    formatter={() => ""}
+                  />
+                  <Tooltip
+                    wrapperStyle={{ backgroundColor: "#16202A", border: "none" }}
+                    contentStyle={{ color: "#E0E6ED" }}
+                  />
+                </RadialBarChart>
+              </ResponsiveContainer>
+              <div className="text-center mt-2">
+                <div className="text-sm text-[#7A8FA6]">{s.label}</div>
+                <div className="text-2xl font-semibold">
+                  {s.value.toLocaleString()}
+                  {s.unit}
+                </div>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
-      {/* Interactive OpenStreetMap */}
-      <section className="bg-gray-700 p-6 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4">Operations Area - Kharkiv Region</h2>
-        <OpenStreetMap />
+      {/* Operations Map */}
+      <section className="bg-[#1B2330] p-6 rounded-2xl shadow-md space-y-4">
+        <h2 className="text-xl font-semibold">Operations Area — Kharkiv Region</h2>
+        <div className="h-80 rounded-lg overflow-hidden">
+          <OpenStreetMap />
+        </div>
       </section>
-
-      {/* Interactive Map Display */}
-      {mapSrc && (
-        <section className="bg-gray-800 p-6 rounded-lg">
-          <TransformWrapper
-            initialScale={1}
-            minScale={0.5}
-            maxScale={4}
-            wheel={{ step: 0.1 }}
-            doubleClick={{ disabled: true }}
-          >
-            {({ zoomIn, zoomOut, resetTransform }) => (
-              <>
-                <div className="mb-4 flex space-x-2">
-                  <button
-                    onClick={zoomIn}
-                    className="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded"
-                  >
-                    Zoom In
-                  </button>
-                  <button
-                    onClick={zoomOut}
-                    className="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded"
-                  >
-                    Zoom Out
-                  </button>
-                  <button
-                    onClick={resetTransform}
-                    className="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded"
-                  >
-                    Reset
-                  </button>
-                </div>
-                <TransformComponent>
-                  <img
-                    src={mapSrc}
-                    alt="Risk Map"
-                    className="block mx-auto"
-                  />
-                </TransformComponent>
-              </>
-            )}
-          </TransformWrapper>
-        </section>
-      )}
     </div>
   );
 }
