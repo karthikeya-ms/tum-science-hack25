@@ -2,7 +2,7 @@ import enum
 
 class UserRole(enum.Enum):
     OPERATOR = "operator"
-    MANAGER = "manager"
+    TEAM_LEAD = "Team-Lead"
     NGO = "ngo"
     MINISTRY = "ministry"
 
@@ -13,6 +13,8 @@ class UserStatus(enum.Enum):
 
 class SectorStatus(enum.Enum):
     MINED = "mined"
+    DEMINED = "demined"
     CLEAR = "clear"
     PROBABLE = "probable"
+
 
