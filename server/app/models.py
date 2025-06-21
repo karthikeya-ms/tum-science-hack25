@@ -1,14 +1,7 @@
 from sqlalchemy import (
     Column,
     String,
-    Boolean,
-    Float,
-    Integer,
-    ForeignKey,
-    UniqueConstraint,
-    CheckConstraint,
 )
-from sqlalchemy.orm import relationship
 from uuid import uuid4
 
 from app.database import Base

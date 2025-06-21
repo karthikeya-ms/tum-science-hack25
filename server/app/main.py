@@ -4,8 +4,8 @@ from fastapi import FastAPI
 from fastapi.responses import Response
 
 from app.routes.root import router as root_router
-
-
+from app.config import settings
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
