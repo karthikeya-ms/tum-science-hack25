@@ -131,8 +131,86 @@ def _build_gdf(ua_geojson_path: str = "ua.json") -> gpd.GeoDataFrame:
                     break
 
     gdf['partner'] = gdf['id'].map(assigned).fillna("Unassigned")
-    return gdf
+    
+    
+    # === Leader definitions ===
+    team_leaders = {
+        'A': ['A1', 'A2', 'A3'],
+        'B': ['B1', 'B2'],
+        'C': ['C1'],
+    }
 
+    gdf['leader'] = "Unassigned"
+    
+    # === Helper to pick well-separated seeds ===
+    def pick_multiple_seeds(local_gdf, num_seeds):
+        centroids = np.array([pt.coords[0] for pt in local_gdf.geometry.centroid])
+        chosen = []
+        remaining = list(range(len(local_gdf)))
+        if not remaining:
+            return []
+        first = np.argmin(centroids[:, 1] + centroids[:, 0])
+        chosen.append(first)
+        remaining.remove(first)
+        while len(chosen) < num_seeds and remaining:
+            dists = [(min(np.linalg.norm(centroids[i] - centroids[c]) for c in chosen), i) for i in remaining]
+            dists.sort(reverse=True)
+            chosen.append(dists[0][1])
+            remaining.remove(dists[0][1])
+        return local_gdf.iloc[chosen].index.tolist()   
+    
+    # === Subdivide each partner into contiguous leader zones ===
+    for partner, leaders in team_leaders.items():
+        sub_gdf = gdf[gdf.partner == partner].copy()
+        sub_gdf['orig_id'] = sub_gdf.index
+        sub_gdf = sub_gdf.reset_index(drop=True)
+        sub_gdf['sub_id'] = sub_gdf.index
+        target_cells = len(sub_gdf) // len(leaders)
+
+        geom_idx = rtree_index.Index()
+        for i, geom in enumerate(sub_gdf.geometry):
+            geom_idx.insert(i, geom.bounds)
+
+        seed_ids = pick_multiple_seeds(sub_gdf, len(leaders))
+
+        assigned = {}
+        frontiers = {}
+        allocated = {l: 0 for l in leaders}
+
+        for lid, sid in zip(leaders, seed_ids):
+            assigned[sid] = lid
+            frontiers[lid] = deque([sid])
+            allocated[lid] += 1
+
+        def get_local_neighbors(idx):
+            geom = sub_gdf.loc[idx].geometry
+            candidates = list(geom_idx.intersection(geom.bounds))
+            return [i for i in candidates if i != idx and i not in assigned and geom.touches(sub_gdf.loc[i].geometry)]
+
+        active = set(leaders)
+        while active:
+            for lid in list(active):
+                frontier = frontiers[lid]
+                if not frontier:
+                    active.remove(lid)
+                    continue
+                current = frontier.popleft()
+                neighbors = get_local_neighbors(current)
+                for nbr in neighbors:
+                    if nbr in assigned:
+                        continue
+                    assigned[nbr] = lid
+                    allocated[lid] += 1
+                    frontier.append(nbr)
+                    if allocated[lid] >= target_cells:
+                        active.remove(lid)
+                        break
+
+        id_to_leader = {sub_gdf.loc[i, 'orig_id']: lid for i, lid in assigned.items()}
+        gdf.loc[gdf.partner == partner, 'leader'] = gdf[gdf.partner == partner].index.map(id_to_leader).fillna("Unassigned")
+    
+    # Return the completed GDF after all partners have been processed
+    return gdf
 
 def _plot_gdf(gdf, ua_geojson_path: str):
     # Plot categorical partner allocation
