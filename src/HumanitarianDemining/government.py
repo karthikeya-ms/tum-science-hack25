@@ -7,43 +7,36 @@ import matplotlib.pyplot as plt
 from rtree import index as rtree_index
 from collections import deque
 
+# === Step 1: Load Ukraine boundary ===
+ukraine_path = "ua.json"  # path to your Ukraine GeoJSON
+ukraine = gpd.read_file(ukraine_path).to_crs("EPSG:4326")
 
-# === Step 1: Load Ukraine boundary from your GeoJSON ===
-# Replace with your actual path
-ukraine_path = "ua.json"
-ukraine = gpd.read_file(ukraine_path)
-ukraine = ukraine.to_crs("EPSG:4326")
-
-# === Step 1: Define a 100 km radius area around Kharkiv (~31,000 km²) ===
+# === Step 2: Define Kharkiv region (100 km radius) ===
 center_lat, center_lon = 49.988, 36.232
 radius_km = 100
-radius_deg = radius_km / 111  # Approx conversion
+radius_deg = radius_km / 111
 kharkiv_region = Point(center_lon, center_lat).buffer(radius_deg)
 
-# === Step 2: Generate multiple risk "blobs" inside Kharkiv region ===
-blob_radius_km = 7  # each blob ≈ 154 km²
+# === Step 3: Generate random risk blobs within Kharkiv ===
+blob_radius_km = 7
 blob_radius_deg = blob_radius_km / 111
 target_area_km2 = 31000
 num_blobs = int(target_area_km2 / (np.pi * blob_radius_km**2))
 
 minx, miny, maxx, maxy = kharkiv_region.bounds
 blobs = []
-
 while len(blobs) < num_blobs:
     x = random.uniform(minx, maxx)
     y = random.uniform(miny, maxy)
-    point = Point(x, y)
-    if kharkiv_region.contains(point):
-        blobs.append(point.buffer(blob_radius_deg))
-
+    p = Point(x, y)
+    if kharkiv_region.contains(p):
+        blobs.append(p.buffer(blob_radius_deg))
 mine_zone = unary_union(blobs)
-mine_zone_gdf = gpd.GeoDataFrame(geometry=[mine_zone], crs="EPSG:4326")
 
-# === Step 3: Discretize into ~1 km² grid cells ===
-resolution = 0.01  # ~1 km
+# === Step 4: Discretize into ~1 km² grid ===
+resolution = 0.01
 minx, miny, maxx, maxy = mine_zone.bounds
 grid_cells = []
-
 x = minx
 while x < maxx:
     y = miny
@@ -53,36 +46,18 @@ while x < maxx:
             risk = max(0, min(1, random.gauss(0.5, 0.2)))
         else:
             risk = 0
-        grid_cells.append({
-            'geometry': cell,
-            'risk': risk
-        })
+        grid_cells.append({'geometry': cell, 'risk': risk})
         y += resolution
     x += resolution
 
 mine_risk_gdf = gpd.GeoDataFrame(grid_cells, crs="EPSG:4326")
-
-# Optional: Clip to Ukraine boundary
 mine_risk_gdf = gpd.overlay(mine_risk_gdf, ukraine, how="intersection")
-
 gdf = mine_risk_gdf.copy()
 
-# === Step 4: Save and visualize ===
-# mine_risk_gdf.to_file("synthetic_kharkiv_mine_risk.json", driver="GeoJSON")
-
 # === Partner definitions ===
-# Define partner : risk share
-partners = {
-    'A': 10000,
-    'B': 7000,
-    'C': 3000,
-}
-
-# === Normalize shares to sum to 1 ===
+partners = {'A': 10000, 'B': 7000, 'C': 3000}
 total_share = sum(partners.values())
 partners = {k: v / total_share for k, v in partners.items()}
-
-# === Calculate total risk and target for each partner ===
 total_risk = gdf['risk'].sum()
 partner_targets = {p: total_risk * share for p, share in partners.items()}
 partner_allocated = {p: 0.0 for p in partners}
@@ -94,34 +69,22 @@ geom_index = rtree_index.Index()
 for i, geom in enumerate(gdf.geometry):
     geom_index.insert(i, geom.bounds)
 
-# === Select initial seed cells ===
+# === Seed selector ===
 def pick_seed(gdf, existing_ids):
-    """
-    Picks a seed farthest from previously chosen ones
-    """
     if not existing_ids:
-        # First seed: choose bottom-left
         return gdf.loc[gdf.centroid.y.idxmin()]
-    else:
-        used = gdf.loc[list(existing_ids)].centroid.to_numpy()
-        all_coords = gdf.centroid.to_numpy()
-        max_dist = -1
-        best_idx = -1
-        for idx, c in enumerate(all_coords):
-            if idx in existing_ids:
-                continue
-            d = min(np.linalg.norm(np.array(c.coords[0]) - np.array(u.coords[0])) for u in used)
-            if d > max_dist:
-                max_dist = d
-                best_idx = idx
-        return gdf.loc[best_idx]
+    used = gdf.loc[list(existing_ids)].centroid.to_numpy()
+    all_coords = gdf.centroid.to_numpy()
+    best_idx = max(
+        ((idx, min(np.linalg.norm(np.array(c.coords[0]) - np.array(u.coords[0])) for u in used))
+         for idx, c in enumerate(all_coords) if idx not in existing_ids),
+        key=lambda x: x[1])[0]
+    return gdf.loc[best_idx]
 
 assigned = {}
 seeds = {}
 frontiers = {}
-
 used_ids = set()
-
 for partner in partners:
     seed = pick_seed(gdf, used_ids)
     seed_id = seed['id']
@@ -144,7 +107,7 @@ def get_neighbors(cell_id):
             neighbors.append(idx)
     return neighbors
 
-# === Flood-fill allocation ===
+# === Partner flood-fill allocation ===
 active = set(partners.keys())
 while active:
     for partner in list(active):
@@ -154,7 +117,6 @@ while active:
             continue
         current = frontier.popleft()
         neighbors = get_neighbors(current)
-
         for nbr in neighbors:
             if nbr in assigned:
                 continue
@@ -165,29 +127,93 @@ while active:
                 active.remove(partner)
                 break
 
-# === Finalize GeoDataFrame ===
 gdf['partner'] = gdf['id'].map(assigned).fillna("Unassigned")
 gdf = gdf.drop(columns=['centroid', 'id'])
 
-# === Save to file ===
-gdf.to_file("floodfill_partitioned_risk_multi.json", driver='GeoJSON')
+# === Leader definitions ===
+team_leaders = {
+    'A': ['A1', 'A2', 'A3'],
+    'B': ['B1', 'B2'],
+    'C': ['C1'],
+}
 
-# Print risk allocation summary and targets
-print("Risk Allocation Summary:")
-for partner, target in partner_targets.items():
-    allocated = partner_allocated[partner]
-    print(f"Partner {partner}: Target = {target:.2f}, Allocated = {allocated:.2f}, "
-          f"Difference = {allocated - target:.2f}")
+gdf['leader'] = "Unassigned"
 
-# Filter only cells with risk > 0
-gdf_nonzero = gdf[gdf['risk'] > 0]
+# === Helper to pick well-separated seeds ===
+def pick_multiple_seeds(local_gdf, num_seeds):
+    centroids = np.array([pt.coords[0] for pt in local_gdf.geometry.centroid])
+    chosen = []
+    remaining = list(range(len(local_gdf)))
+    if not remaining:
+        return []
+    first = np.argmin(centroids[:, 1] + centroids[:, 0])
+    chosen.append(first)
+    remaining.remove(first)
+    while len(chosen) < num_seeds and remaining:
+        dists = [(min(np.linalg.norm(centroids[i] - centroids[c]) for c in chosen), i) for i in remaining]
+        dists.sort(reverse=True)
+        chosen.append(dists[0][1])
+        remaining.remove(dists[0][1])
+    return local_gdf.iloc[chosen].index.tolist()
 
-# Plot
+# === Subdivide each partner into contiguous leader zones ===
+for partner, leaders in team_leaders.items():
+    sub_gdf = gdf[gdf.partner == partner].copy()
+    sub_gdf['orig_id'] = sub_gdf.index
+    sub_gdf = sub_gdf.reset_index(drop=True)
+    sub_gdf['sub_id'] = sub_gdf.index
+    target_cells = len(sub_gdf) // len(leaders)
+
+    geom_idx = rtree_index.Index()
+    for i, geom in enumerate(sub_gdf.geometry):
+        geom_idx.insert(i, geom.bounds)
+
+    seed_ids = pick_multiple_seeds(sub_gdf, len(leaders))
+
+    assigned = {}
+    frontiers = {}
+    allocated = {l: 0 for l in leaders}
+
+    for lid, sid in zip(leaders, seed_ids):
+        assigned[sid] = lid
+        frontiers[lid] = deque([sid])
+        allocated[lid] += 1
+
+    def get_local_neighbors(idx):
+        geom = sub_gdf.loc[idx].geometry
+        candidates = list(geom_idx.intersection(geom.bounds))
+        return [i for i in candidates if i != idx and i not in assigned and geom.touches(sub_gdf.loc[i].geometry)]
+
+    active = set(leaders)
+    while active:
+        for lid in list(active):
+            frontier = frontiers[lid]
+            if not frontier:
+                active.remove(lid)
+                continue
+            current = frontier.popleft()
+            neighbors = get_local_neighbors(current)
+            for nbr in neighbors:
+                if nbr in assigned:
+                    continue
+                assigned[nbr] = lid
+                allocated[lid] += 1
+                frontier.append(nbr)
+                if allocated[lid] >= target_cells:
+                    active.remove(lid)
+                    break
+
+    id_to_leader = {sub_gdf.loc[i, 'orig_id']: lid for i, lid in assigned.items()}
+    gdf.loc[gdf.partner == partner, 'leader'] = gdf[gdf.partner == partner].index.map(id_to_leader).fillna("Unassigned")
+
+# === Export or visualize ===
+gdf.to_file("kharkiv_mine_risk_leader_partitioned.json", driver='GeoJSON')
+
+# === Visualization ===
 fig, ax = plt.subplots(figsize=(10, 10))
-gdf_nonzero.plot(column='partner', categorical=True, legend=True, ax=ax,
-                 cmap='Set2', edgecolor='black', linewidth=0.1)
-
-plt.title("Landmine Risk Cells Allocated to Partners")
+gdf[gdf['risk'] > 0].plot(column='leader', categorical=True, legend=True, ax=ax,
+                          cmap='tab10', edgecolor='black', linewidth=0.05)
+plt.title("Landmine Risk Allocated to Team Leaders")
 plt.xlabel("Longitude")
 plt.ylabel("Latitude")
 plt.tight_layout()
