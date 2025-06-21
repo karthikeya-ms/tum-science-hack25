@@ -40,9 +40,9 @@ def seed_users():
     }
 
     try:        
-        print("Adding Gormint Aunty...")
+        print("Adding Ministry...")
         gormint_aunty = user_repository.insert_one(gormint_aunty)
-        print(f"Gormint Aunty added with ID: {gormint_aunty.id}")
+        print(f"Ministry added with ID: {gormint_aunty.id}")
         session.commit()
     except Exception as e:
         print(f"Error adding Gormint Aunty: {e}")
@@ -62,7 +62,7 @@ def seed_users():
         print(f"Adding NGO user {letter}...")
         try:
             NGO_user = user_repository.insert_one(user_data)
-            print(f"NGO user {letter} added with ID: {NGO_user.id}")
+            print(f"NGO user {letter} added with ID: {user.id}")
             session.commit()
         except Exception as e:
             print(f"Error adding NGO user {letter}: {e}")
