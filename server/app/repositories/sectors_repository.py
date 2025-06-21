@@ -1,7 +1,6 @@
 from .base_repository import BaseRepository
 from app.models import Sector
 from app.dtos import SectorCreate
-from uuid import UUID
 from sqlalchemy import func, select
 from geoalchemy2 import Geography
 from geoalchemy2.shape import from_shape

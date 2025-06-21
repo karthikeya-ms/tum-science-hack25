@@ -5,10 +5,7 @@ from sqlalchemy import (
     Float,
     Integer,
     DateTime,
-    Boolean,
     ForeignKey,
-    UniqueConstraint,
-    CheckConstraint,
 )
 
 from sqlalchemy.orm import relationship, declarative_base
@@ -16,7 +13,6 @@ from sqlalchemy.sql import func
 from uuid import uuid4
 
 from geoalchemy2 import Geometry
-from geoalchemy2.elements import WKTElement
 
 from app.database import CustomBase
 from app.enums import UserRole, UserStatus, SectorStatus
