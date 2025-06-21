@@ -8,5 +8,8 @@ export default defineConfig({
     port: 3000,
     host: true,
     strictPort: true,
+    allowedHosts: [
+      'demining.tum.de',
+    ]
   }
 })

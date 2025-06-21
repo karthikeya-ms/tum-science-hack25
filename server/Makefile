@@ -19,10 +19,15 @@ verify-users:
 clear-users:
 	- docker compose run --rm -e POSTGRESQL_HOST=db --entrypoint="python verify-users.py clear" server
 
+init-db:
+	- docker compose run --rm -e POSTGRESQL_HOST=db --entrypoint="python create_tables.py" server
+	- docker compose run --rm -e POSTGRESQL_HOST=db --entrypoint="python seed_sectors.py" server
+	- docker compose run --rm -e POSTGRESQL_HOST=db --entrypoint="python seed_users.py" server
+
 test:
 	- docker compose run --rm --entrypoint="pytest tests" server
 
 clean:
 	docker compose run --rm --entrypoint="python -c 'from app.utils.clean import clean; clean()'" server
 
-.PHONY: seed seed-sectors seed-users verify-sectors verify-users clear-sectors clear-users test clean
+.PHONY: seed seed-sectors seed-users verify-sectors verify-users clear-sectors clear-users init-db test clean
