@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from geoalchemy2.elements import WKTElement
 from shapely.geometry import Polygon
 from shapely import wkt
+from pyproj import Geod
 
 from app.database import engine
 from app.models import Sector
@@ -22,9 +23,13 @@ def calculate_area_sqm(coordinates):
         # Convert from degrees to approximate meters (very rough approximation)
         # 1 degree latitude ≈ 111,000 meters
         # 1 degree longitude varies by latitude, using average approximation
-        area_deg_sq = polygon.area
-        area_sqm = area_deg_sq * (111000 ** 2)  # Very rough approximation
-        return area_sqm
+        geom = wkt.loads(polygon.wkt)
+        geod = Geod(ellps="WGS84")
+
+        area_sqm, _ = geod.geometry_area_perimeter(geom)
+        # area_deg_sq = polygon.area
+        # area_sqm = area_deg_sq * (111000 ** 2)  # Very rough approximation
+        return area_sqm / 1e6  # Convert to square km
     except Exception as e:
         print(f"Error calculating area: {e}")
         return 0.0
@@ -82,7 +87,7 @@ def seed_sectors():
         print(f"Total features in file: {len(features)}")
         
         # Take only the first 5 features
-        features_to_seed = features[:5]
+        features_to_seed = features[:]
         print(f"Seeding first {len(features_to_seed)} features...")
         
         # Clear existing sectors (optional - remove if you want to keep existing data)
@@ -107,6 +112,10 @@ def seed_sectors():
                 
                 # Extract properties
                 risk = properties.get('risk', 0.0)
+                if risk == 0.0:
+                    sector_status = SectorStatus.CLEAR
+                else:
+                    sector_status = SectorStatus.PROBABLE
                 
                 # Convert coordinates to WKT
                 wkt_geometry = coordinates_to_wkt(coordinates)
@@ -123,12 +132,12 @@ def seed_sectors():
                     area_sqm=area_sqm,
                     risk_probability=risk,
                     total_mines_found=0,  # Default value
-                    status=SectorStatus.CLEAR,  # Default status
+                    status=sector_status,  # Default status
                     # Assignment fields are left as None (nullable)
                 )
                 
                 session.add(sector)
-                print(f"Added sector {i}: Risk={risk}, Area={area_sqm:.2f} sqm")
+                print(f"Added sector {i}: Risk={risk}, Status={sector_status} Area={area_sqm:.2f} sqm")
                 
             except Exception as e:
                 print(f"Error processing feature {i}: {e}")
