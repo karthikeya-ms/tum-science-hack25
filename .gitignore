@@ -1,8 +1,9 @@
 src/HumanitarianDemining.egg-info
 
-
+node_modules/
 # Python
 __pycache__/
 
 *.json
 *.pyc
+.DS_Store
