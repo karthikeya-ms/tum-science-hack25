@@ -1,7 +1,7 @@
 // src/pages/GovOverview.jsx
 import React, { useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-import SimpleMap from "./SimpleMap";
+import OpenStreetMap from "./OpenStreetMap";
 
 export default function GovOverview() {
   const stats = [
@@ -13,19 +13,19 @@ export default function GovOverview() {
   const [mapSrc, setMapSrc] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const fetchMap = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("http://localhost:8000/risk-map/png");
-      const blob = await res.blob();
-      setMapSrc(URL.createObjectURL(blob));
-    } catch (err) {
-      console.error(err);
-      alert("Failed to generate map");
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const fetchMap = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const res = await fetch("http://localhost:8000/risk-map/png");
+  //     const blob = await res.blob();
+  //     setMapSrc(URL.createObjectURL(blob));
+  //   } catch (err) {
+  //     console.error(err);
+  //     alert("Failed to generate map");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 text-white">
@@ -35,15 +35,15 @@ export default function GovOverview() {
           <h1 className="text-3xl font-bold">National Overview</h1>
           <p className="text-gray-400">High-level metrics for decision makers</p>
         </div>
-        <button
-          onClick={fetchMap}
+        {/* <button
+          //onClick={fetchMap}
           disabled={loading}
           className={`px-4 py-2 rounded ${
             loading ? "bg-gray-600" : "bg-blue-600 hover:bg-blue-500"
           }`}
         >
           {loading ? "Generating…" : "Generate Risk Map"}
-        </button>
+        </button> */}
       </header>
 
       {/* Stats Grid */}
@@ -62,7 +62,7 @@ export default function GovOverview() {
       {/* Interactive OpenStreetMap */}
       <section className="bg-gray-700 p-6 rounded-lg">
         <h2 className="text-xl font-semibold mb-4">Operations Area - Kharkiv Region</h2>
-        <SimpleMap />
+        <OpenStreetMap />
       </section>
 
       {/* Interactive Map Display */}
