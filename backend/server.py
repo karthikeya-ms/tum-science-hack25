@@ -1,16 +1,13 @@
-# backend/server.py
-
 import os
 import io
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 
-from map_generator import generate_risk_map
+from map_generator import generate_risk_map, generate_risk_map_for_partner
 
 app = FastAPI()
 
-# CORS so your React app can call us
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173"],
@@ -20,16 +17,33 @@ app.add_middleware(
 
 UA_JSON = os.path.join(os.path.dirname(__file__), "ua.json")
 
-# === Generate & cache the map once at startup ===
+# Cache full map and per-partner maps at startup
 try:
-    _cached_map = generate_risk_map(UA_JSON)
-    print(f"🗺️  Risk map ready at -> http://localhost:8000/risk-map/png")
+    _cached_full = generate_risk_map(UA_JSON)
+    _cached_partner = {
+        p: generate_risk_map_for_partner(UA_JSON, p)
+        for p in ("A", "B", "C")
+    }
+    print(f"🗺️  Cached endpoints ready: "
+          f"http://localhost:8000/risk-map/png  "
+          f"and http://localhost:8000/risk-map/png?partner=A|B|C")
 except Exception as e:
     print(f"❌ Map generation failed: {e}")
-    _cached_map = None
+    _cached_full = None
+    _cached_partner = {}
 
 @app.get("/risk-map/png")
-def get_risk_map():
-    if _cached_map is None:
-        raise HTTPException(status_code=500, detail="Map not available")
-    return StreamingResponse(io.BytesIO(_cached_map), media_type="image/png")
+def get_risk_map(partner: str = Query(None, regex="^[ABC]$")):
+    """
+    If ?partner=A|B|C is provided, returns that slice;
+    otherwise returns the full map.
+    """
+    if partner:
+        img = _cached_partner.get(partner)
+        if not img:
+            raise HTTPException(404, f"No map for partner {partner}")
+        return StreamingResponse(io.BytesIO(img), media_type="image/png")
+
+    if not _cached_full:
+        raise HTTPException(500, "Map not available")
+    return StreamingResponse(io.BytesIO(_cached_full), media_type="image/png")

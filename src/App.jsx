@@ -1,3 +1,5 @@
+// src/App.jsx
+
 import React, { useState } from "react";
 import Login from "./pages/Login";
 
@@ -22,37 +24,46 @@ import GovRegional from "./pages/GovRegional";
 import GovDownload from "./pages/GovDownload";
 
 export default function App() {
-  const [user, setUser] = useState(null);  // { role, username }
+  // user = { role: "operator"|"teamLead"|"ngo"|"gov", username: string, partner?: "A"|"B"|"C" }
+  const [user, setUser] = useState(null);
   const [tab, setTab]   = useState("overview");
 
-  // Show login if not signed in
+  // Show login form until authenticated
   if (!user) {
     return <Login onLogin={setUser} />;
   }
 
-  // Define tab sets per role
+  // Build tab lists per role
   const operatorTabs = [
     { key: "overview",  label: "Overview",  comp: <OperatorHome /> },
     { key: "tasks",     label: "Tasks",     comp: <OperatorTasks /> },
     { key: "incidents", label: "Incidents", comp: <OperatorIncidents /> },
   ];
+
   const teamLeadTabs = [
     { key: "overview",    label: "Overview",    comp: <TeamLeadHome /> },
     { key: "assignments", label: "Assignments", comp: <TeamLeadAssignments /> },
     { key: "incidents",   label: "Incidents",   comp: <TeamLeadIncidents /> },
   ];
+
   const ngoTabs = [
-    { key: "overview",    label: "Overview",    comp: <NgoHome /> },
-    { key: "operations",  label: "Operations",  comp: <NgoOperations /> },
-    { key: "reports",     label: "Reports",     comp: <NgoReports /> },
-  ];
-  const govTabs = [
-    { key: "overview",    label: "Overview",    comp: <GovOverview /> },
-    { key: "regional",    label: "Regional",    comp: <GovRegional /> },
-    { key: "download",    label: "Download",    comp: <GovDownload /> },
+    {
+      key: "overview",
+      label: "Overview",
+      // pass partner code so NgoHome can fetch /risk-map/png?partner=X
+      comp: <NgoHome partner={user.partner} />,
+    },
+    { key: "operations", label: "Operations", comp: <NgoOperations /> },
+    { key: "reports",    label: "Reports",    comp: <NgoReports /> },
   ];
 
-  // Pick the right tabs based on role
+  const govTabs = [
+    { key: "overview", label: "Overview", comp: <GovOverview /> },
+    { key: "regional", label: "Regional", comp: <GovRegional /> },
+    { key: "download", label: "Download", comp: <GovDownload /> },
+  ];
+
+  // Select correct tabs array
   let tabs;
   switch (user.role) {
     case "operator":
@@ -71,25 +82,26 @@ export default function App() {
       tabs = operatorTabs;
   }
 
-  // Ensure the current tab exists
-  const activeTab = tabs.find((t) => t.key === tab) || tabs[0];
+  // Ensure active tab is valid
+  const active = tabs.find((t) => t.key === tab) || tabs[0];
 
   return (
     <div className="min-h-screen bg-gray-800 text-white p-6">
       <div className="max-w-4xl mx-auto space-y-6">
         {/* Top Bar */}
         <div className="flex justify-between items-center">
-          <h1 className="text-xl font-semibold capitalize">
+          <h1 className="text-xl font-semibold">
             {user.role === "operator"
               ? "Operator"
               : user.role === "teamLead"
               ? "Team Lead"
               : user.role === "ngo"
-              ? "NGO / Partner"
-              : "Government / UN"} Dashboard
+              ? `NGO Partner ${user.partner}`
+              : "Government / UN"}{" "}
+            Dashboard
           </h1>
-          <div>
-            <span className="mr-4 text-gray-300">{user.username}</span>
+          <div className="flex items-center space-x-4">
+            <span className="text-gray-300">{user.username}</span>
             <button
               onClick={() => {
                 setUser(null);
@@ -119,8 +131,8 @@ export default function App() {
           ))}
         </div>
 
-        {/* Active Page */}
-        <div>{activeTab.comp}</div>
+        {/* Active Page Content */}
+        <div>{active.comp}</div>
       </div>
     </div>
   );
