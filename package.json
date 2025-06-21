@@ -10,11 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "-": "^0.0.1",
     "@heroicons/react": "^2.2.0",
+    "@types/leaflet": "^1.9.18",
+    "leaflet": "^1.9.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.6.2",
     "react-zoom-pan-pinch": "^3.7.0",
+    "save": "^2.9.0",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {

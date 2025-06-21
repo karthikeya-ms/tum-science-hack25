@@ -1,4 +1,5 @@
 import React from "react";
+import OpenStreetMap from "./OpenStreetMap";
 
 export default function OperatorHome() {
   return (
@@ -22,7 +23,7 @@ export default function OperatorHome() {
           </div>
         </div>
         <div className="w-full h-64 bg-gray-800 rounded-lg flex items-center justify-center text-gray-500">
-          [Map Placeholder]
+          <OpenStreetMap />
         </div>
       </section>
     </div>
