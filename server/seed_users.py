@@ -64,47 +64,47 @@ def seed_users():
             print(f"Error adding NGO user {letter}: {e}")
             session.rollback()
 
-            for i in range(1, maxTeamLeads):
+        for i in range(1, maxTeamLeads):
+            user_data = {
+                "userName": f"{letter}{i}",
+                "email": f"{letter}{i}@{letter}-NGO.com",
+                "role": UserRole.TEAM_LEAD,
+                "status": UserStatus.ACTIVE,
+                "parent_user_id": NGO_user.id,
+            }
+
+            try:
+                print(f"Adding Team Lead user {letter}{i}...")
+                team_lead_user = user_repository.insert_one(user_data)
+                print(
+                    f"Team Lead user {letter}{i} added with ID: {team_lead_user.id}"
+                )
+                session.commit()
+            except Exception as e:
+                print(f"Error adding Team Lead user {letter}{i}: {e}")
+                session.rollback()
+
+            for j in range(1, 4):
                 user_data = {
-                    "userName": f"{letter}{i}",
-                    "email": f"{letter}{i}@{letter}-NGO.com",
-                    "role": UserRole.TEAM_LEAD,
+                    "userName": f"{letter}{i}{j}",
+                    "email": f"{letter}{i}{j}@{letter}-NGO.com",
+                    "role": UserRole.OPERATOR,
                     "status": UserStatus.ACTIVE,
-                    "parent_user_id": NGO_user.id,
+                    "parent_user_id": team_lead_user.id,
                 }
 
                 try:
-                    print(f"Adding Team Lead user {letter}{i}...")
-                    team_lead_user = user_repository.insert_one(user_data)
+                    print(f"Adding Operator user {letter}{i}{j}...")
+                    operator_user = user_repository.insert_one(user_data)
                     print(
-                        f"Team Lead user {letter}{i} added with ID: {team_lead_user.id}"
+                        f"Operator user {letter}{i}{j} added with ID: {operator_user.id}"
                     )
                     session.commit()
                 except Exception as e:
-                    print(f"Error adding Team Lead user {letter}{i}: {e}")
+                    print(f"Error adding Operator user {letter}{i}{j}: {e}")
                     session.rollback()
 
-                for j in range(1, 4):
-                    user_data = {
-                        "userName": f"{letter}{i}{j}",
-                        "email": f"{letter}{i}{j}@{letter}-NGO.com",
-                        "role": UserRole.OPERATOR,
-                        "status": UserStatus.ACTIVE,
-                        "parent_user_id": team_lead_user.id,
-                    }
-
-                    try:
-                        print(f"Adding Operator user {letter}{i}{j}...")
-                        operator_user = user_repository.insert_one(user_data)
-                        print(
-                            f"Operator user {letter}{i}{j} added with ID: {operator_user.id}"
-                        )
-                        session.commit()
-                    except Exception as e:
-                        print(f"Error adding Operator user {letter}{i}{j}: {e}")
-                        session.rollback()
-
-            maxTeamLeads -= 1
+        maxTeamLeads -= 1
 
 
 if __name__ == "__main__":

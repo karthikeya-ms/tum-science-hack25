@@ -27,7 +27,7 @@ init-db:
 test:
 	- docker compose run --rm --entrypoint="pytest tests" server
 
-clean: clear-users clear-sectors
+clean: clear-sectors clear-users
 	@echo "Destroying model tables..."
 	- docker compose run --rm -e POSTGRESQL_HOST=db --entrypoint="python drop_tables.py" server
 	@echo "Database tables destroyed!"
