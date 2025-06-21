@@ -1,45 +1,7 @@
-// // src/pages/GovOverview.jsx
-// import React from "react";
-
-// export default function GovOverview() {
-//   const stats = [
-//     { label: "Area Cleared", value: "45 000 ha" },
-//     { label: "Population Impacted", value: "600 000" },
-//     { label: "Economic Value", value: "$80 M" },
-//   ];
-
-//   return (
-//     <div className="max-w-4xl mx-auto space-y-8 text-white">
-//       {/* Header */}
-//       <header>
-//         <h1 className="text-3xl font-bold">National Overview</h1>
-//         <p className="text-gray-400">High-level metrics for decision makers</p>
-//       </header>
-
-//       {/* Stats Grid */}
-//       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-//         {stats.map((s) => (
-//           <div key={s.label} className="bg-gray-700 p-4 rounded-lg text-center">
-//             <div className="text-sm text-gray-400">{s.label}</div>
-//             <div className="mt-2 text-2xl font-semibold">{s.value}</div>
-//           </div>
-//         ))}
-//       </div>
-
-//       {/* Map Placeholder */}
-//       <section className="bg-gray-800 p-6 rounded-lg">
-//         <h2 className="text-xl font-semibold mb-4">Clearance Map</h2>
-//         <div className="w-full h-64 bg-gradient-to-br from-gray-600 to-gray-700 rounded-lg flex items-center justify-center text-gray-500">
-//           [Map Placeholder]
-//         </div>
-//       </section>
-//     </div>
-//   );
-// }
-
 
 // src/pages/GovOverview.jsx
 import React, { useState } from "react";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 export default function GovOverview() {
   const stats = [
@@ -87,17 +49,58 @@ export default function GovOverview() {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {stats.map((s) => (
-          <div key={s.label} className="bg-gray-700 p-4 rounded-lg text-center">
+          <div
+            key={s.label}
+            className="bg-gray-700 p-4 rounded-lg text-center"
+          >
             <div className="text-sm text-gray-400">{s.label}</div>
             <div className="mt-2 text-2xl font-semibold">{s.value}</div>
           </div>
         ))}
       </div>
 
-      {/* Map Display */}
+      {/* Interactive Map Display */}
       {mapSrc && (
-        <section className="bg-gray-800 p-6 rounded-lg flex justify-center">
-          <img src={mapSrc} alt="Risk Map" className="max-w-full" />
+        <section className="bg-gray-800 p-6 rounded-lg">
+          <TransformWrapper
+            initialScale={1}
+            minScale={0.5}
+            maxScale={4}
+            wheel={{ step: 0.1 }}
+            doubleClick={{ disabled: true }}
+          >
+            {({ zoomIn, zoomOut, resetTransform }) => (
+              <>
+                <div className="mb-4 flex space-x-2">
+                  <button
+                    onClick={zoomIn}
+                    className="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded"
+                  >
+                    Zoom In
+                  </button>
+                  <button
+                    onClick={zoomOut}
+                    className="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded"
+                  >
+                    Zoom Out
+                  </button>
+                  <button
+                    onClick={resetTransform}
+                    className="bg-gray-700 hover:bg-gray-600 px-3 py-1 rounded"
+                  >
+                    Reset
+                  </button>
+                </div>
+                <TransformComponent>
+                  <img
+                    src={mapSrc}
+                    alt="Risk Map"
+                    className="block mx-auto"
+                  />
+                </TransformComponent>
+              </>
+            )}
+          </TransformWrapper>
         </section>
       )}
     </div>
