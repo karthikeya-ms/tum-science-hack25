@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { MapContainer, Marker, Popup, TileLayer, GeoJSON } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, GeoJSON, LayersControl } from "react-leaflet";
 import L from 'leaflet';
 
 // Fix for default markers in React Leaflet
@@ -45,6 +45,8 @@ export default function OpenStreetMap({
     C: false
   });
   const [mapReady, setMapReady] = useState(false);
+  const [terrainInfo, setTerrainInfo] = useState(null);
+  const [clickedCoords, setClickedCoords] = useState(null);
 
   // Normalize partners prop to always be an array
   const activePartners = Array.isArray(partners) ? partners : [partners];
@@ -59,6 +61,66 @@ export default function OpenStreetMap({
       return () => clearTimeout(timer);
     }
   }, [partnerAData, partnerBData, partnerCData, mapReady]);
+
+  // // Function to get terrain information for coordinates
+  // const getTerrainInfo = async (lat, lng) => {
+  //   try {
+  //     // Using Open-Elevation API for elevation data
+  //     const elevationResponse = await fetch(`https://api.open-elevation.com/api/v1/lookup?locations=${lat},${lng}`);
+  //     const elevationData = await elevationResponse.json();
+      
+  //     // Using OpenWeatherMap Geocoding API for location details (you might want to add your API key)
+  //     const geoResponse = await fetch(`https://api.openweathermap.org/geo/1.0/reverse?lat=${lat}&lon=${lng}&limit=1&appid=YOUR_API_KEY_HERE`);
+      
+  //     let locationData = null;
+  //     if (geoResponse.ok) {
+  //       const geoData = await geoResponse.json();
+  //       locationData = geoData[0];
+  //     }
+
+  //     // Simple terrain classification based on elevation
+  //     const elevation = elevationData.results[0]?.elevation || 0;
+  //     let terrainType = 'Unknown';
+      
+  //     if (elevation < 100) {
+  //       terrainType = 'Lowland/Plain';
+  //     } else if (elevation < 300) {
+  //       terrainType = 'Rolling Hills';
+  //     } else if (elevation < 600) {
+  //       terrainType = 'Hills';
+  //     } else {
+  //       terrainType = 'Mountainous';
+  //     }
+
+  //     return {
+  //       latitude: lat,
+  //       longitude: lng,
+  //       elevation: elevation,
+  //       terrainType: terrainType,
+  //       location: locationData ? `${locationData.name}, ${locationData.country}` : 'Unknown Location'
+  //     };
+  //   } catch (error) {
+  //     console.error('Error fetching terrain info:', error);
+  //     return {
+  //       latitude: lat,
+  //       longitude: lng,
+  //       elevation: 'N/A',
+  //       terrainType: 'Unknown',
+  //       location: 'Error fetching location data',
+  //       error: error.message
+  //     };
+  //   }
+  // };
+
+  // // Handle map click to get terrain info
+  // const handleMapClick = async (e) => {
+  //   const { lat, lng } = e.latlng;
+  //   setClickedCoords({ lat, lng });
+  //   setTerrainInfo({ loading: true });
+    
+  //   const info = await getTerrainInfo(lat, lng);
+  //   setTerrainInfo(info);
+  // };
 
   useEffect(() => {
     const fetchPartnerData = async (partner) => {
@@ -226,7 +288,8 @@ export default function OpenStreetMap({
   const mapKey = `map-${activePartners.join('-')}-${getTotalFeatures()}`;
 
   return (
-    <div className="w-full h-96 rounded-lg overflow-hidden border border-gray-600">
+    <div className="w-full h-96 rounded-lg overflow-hidden border border-gray-600 relative">
+      {/* <div className="w-full h-96 rounded-lg overflow-hidden border border-gray-600"></div> */}
       
       <MapContainer 
         key={mapKey}
@@ -243,10 +306,70 @@ export default function OpenStreetMap({
           setTimeout(() => setMapReady(true), 200);
         }}
       >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+        <LayersControl position="topright">
+          {/* Base Map Layers */}
+          <LayersControl.BaseLayer checked name="OpenStreetMap">
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+          </LayersControl.BaseLayer>
+
+          <LayersControl.BaseLayer name="Satellite (Esri)">
+            <TileLayer
+              attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+            />
+          </LayersControl.BaseLayer>
+
+          <LayersControl.BaseLayer name="Terrain">
+            <TileLayer
+              attribution='Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+              url="https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png"
+            />
+          </LayersControl.BaseLayer>
+
+          <LayersControl.BaseLayer name="Dark Mode">
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+            />
+          </LayersControl.BaseLayer>
+
+          {/* Partner Data Overlays */}
+          {activePartners.includes('A') && partnerAData && !loadingStatus.A && mapReady && (
+            <LayersControl.Overlay checked name="Partner A Data">
+              <GeoJSON
+                key={`partner-a-${partnerAData.features?.length}-${mapReady}`}
+                data={partnerAData}
+                style={getGeoJsonStyle('A')}
+                onEachFeature={onEachFeature('A')}
+              />
+            </LayersControl.Overlay>
+          )}
+          
+          {activePartners.includes('B') && partnerBData && !loadingStatus.B && mapReady && (
+            <LayersControl.Overlay checked name="Partner B Data">
+              <GeoJSON
+                key={`partner-b-${partnerBData.features?.length}-${mapReady}`}
+                data={partnerBData}
+                style={getGeoJsonStyle('B')}
+                onEachFeature={onEachFeature('B')}
+              />
+            </LayersControl.Overlay>
+          )}
+          
+          {activePartners.includes('C') && partnerCData && !loadingStatus.C && mapReady && (
+            <LayersControl.Overlay checked name="Partner C Data">
+              <GeoJSON
+                key={`partner-c-${partnerCData.features?.length}-${mapReady}`}
+                data={partnerCData}
+                style={getGeoJsonStyle('C')}
+                onEachFeature={onEachFeature('C')}
+              />
+            </LayersControl.Overlay>
+          )}
+        </LayersControl>
         
         <Marker position={center}>
           <Popup>
@@ -262,37 +385,36 @@ export default function OpenStreetMap({
                 {activePartners.includes('C') && partnerCData && <div style={{color: '#000000'}}>Partner C: {partnerCData.features?.length || 0} cells</div>}
               </div>
             )}
+            <div style={{ marginTop: '10px', fontSize: '12px', fontStyle: 'italic' }}>
+              Click anywhere on the map to get terrain information
+            </div>
           </Popup>
         </Marker>
-        
-        {/* Render Partner A data only if A is in activePartners and map is ready */}
-        {activePartners.includes('A') && partnerAData && !loadingStatus.A && mapReady && (
-          <GeoJSON
-            key={`partner-a-${partnerAData.features?.length}-${mapReady}`}
-            data={partnerAData}
-            style={getGeoJsonStyle('A')}
-            onEachFeature={onEachFeature('A')}
-          />
-        )}
-        
-        {/* Render Partner B data only if B is in activePartners and map is ready */}
-        {activePartners.includes('B') && partnerBData && !loadingStatus.B && mapReady && (
-          <GeoJSON
-            key={`partner-b-${partnerBData.features?.length}-${mapReady}`}
-            data={partnerBData}
-            style={getGeoJsonStyle('B')}
-            onEachFeature={onEachFeature('B')}
-          />
-        )}
-        
-        {/* Render Partner C data only if C is in activePartners and map is ready */}
-        {activePartners.includes('C') && partnerCData && !loadingStatus.C && mapReady && (
-          <GeoJSON
-            key={`partner-c-${partnerCData.features?.length}-${mapReady}`}
-            data={partnerCData}
-            style={getGeoJsonStyle('C')}
-            onEachFeature={onEachFeature('C')}
-          />
+
+        {/* Clicked location marker */}
+        {clickedCoords && (
+          <Marker position={[clickedCoords.lat, clickedCoords.lng]}>
+            <Popup>
+              <div>
+                <h4>Terrain Information</h4>
+                {terrainInfo?.loading ? (
+                  <p>Loading terrain data...</p>
+                ) : terrainInfo?.error ? (
+                  <div>
+                    <p><strong>Coordinates:</strong> {clickedCoords.lat.toFixed(4)}, {clickedCoords.lng.toFixed(4)}</p>
+                    <p><strong>Error:</strong> {terrainInfo.error}</p>
+                  </div>
+                ) : (
+                  <div>
+                    <p><strong>Location:</strong> {terrainInfo?.location}</p>
+                    <p><strong>Coordinates:</strong> {clickedCoords.lat.toFixed(4)}, {clickedCoords.lng.toFixed(4)}</p>
+                    <p><strong>Elevation:</strong> {terrainInfo?.elevation}m</p>
+                    <p><strong>Terrain Type:</strong> {terrainInfo?.terrainType}</p>
+                  </div>
+                )}
+              </div>
+            </Popup>
+          </Marker>
         )}
       </MapContainer>
       

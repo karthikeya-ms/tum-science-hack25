@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 export default function Login({ onLogin }) {
   const [role, setRole] = useState("teamLead");
-  const [partner, setPartner] = useState("A");         // NEW: partner code
+  const [partner, setPartner] = useState("A");         // Partner code for both NGO and Team Lead
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
@@ -12,8 +12,12 @@ export default function Login({ onLogin }) {
       alert("Please enter both username and password");
       return;
     }
-    // Pass partner through only for NGO role
-    onLogin({ role, username, partner: role === "ngo" ? partner : undefined });
+    // Pass partner through for both NGO and Team Lead roles
+    onLogin({ 
+      role, 
+      username, 
+      partner: (role === "ngo" || role === "teamLead") ? partner : undefined 
+    });
   };
 
   return (
@@ -36,10 +40,12 @@ export default function Login({ onLogin }) {
             </select>
           </div>
 
-          {/* Partner code for NGOs */}
-          {role === "ngo" && (
+          {/* Partner code for NGOs and Team Leads */}
+          {(role === "ngo" || role === "teamLead") && (
             <div>
-              <label className="block text-gray-300 mb-1">Partner</label>
+              <label className="block text-gray-300 mb-1">
+                {role === "teamLead" ? "NGO / Partner" : "Partner"}
+              </label>
               <select
                 value={partner}
                 onChange={(e) => setPartner(e.target.value)}

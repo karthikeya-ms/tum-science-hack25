@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Login from "./pages/Login";
+import { TeamLeadProvider } from "./contexts/TeamLeadContext";
 
 // Operator pages
 import OperatorHome from "./pages/OperatorHome";
@@ -40,6 +41,7 @@ export default function App() {
     { key: "incidents", label: "Incidents", comp: <OperatorIncidents /> },
   ];
 
+  // TeamLead components wrapped with context provider
   const teamLeadTabs = [
     { key: "overview",    label: "Overview",    comp: <TeamLeadHome /> },
     { key: "assignments", label: "Assignments", comp: <TeamLeadAssignments /> },
@@ -85,6 +87,18 @@ export default function App() {
   // Ensure active tab is valid
   const active = tabs.find((t) => t.key === tab) || tabs[0];
 
+  // Render content with TeamLead context if needed
+  const renderContent = () => {
+    if (user.role === "teamLead") {
+      return (
+        <TeamLeadProvider partner={user.partner}>
+          {active.comp}
+        </TeamLeadProvider>
+      );
+    }
+    return active.comp;
+  };
+
   return (
     <div className="min-h-screen bg-gray-800 text-white p-6">
       <div className="max-w-4xl mx-auto space-y-6">
@@ -94,7 +108,7 @@ export default function App() {
             {user.role === "operator"
               ? "Operator"
               : user.role === "teamLead"
-              ? "Team Lead"
+              ? `Team Lead - Partner ${user.partner}`
               : user.role === "ngo"
               ? `NGO Partner ${user.partner}`
               : "Government / UN"}{" "}
@@ -132,7 +146,7 @@ export default function App() {
         </div>
 
         {/* Active Page Content */}
-        <div>{active.comp}</div>
+        <div>{renderContent()}</div>
       </div>
     </div>
   );
