@@ -1,1 +1,3 @@
-src/HumanitarianDemining.egg-info
+*.egg-info
+*.DS_Store
+*.json
