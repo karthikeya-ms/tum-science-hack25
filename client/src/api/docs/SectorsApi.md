@@ -1,63 +1,65 @@
-# SectorsApi
+# FastApi.SectorsApi
 
 All URIs are relative to *http://localhost*
 
-|Method | HTTP request | Description|
-|------------- | ------------- | -------------|
-|[**assignSectorToNgoSectorsSectorIdAssignNgoNgoIdPut**](#assignsectortongosectorssectoridassignngongoidput) | **PUT** /sectors/{sector_id}/assign/ngo/{ngo_id} | Assign Sector To Ngo|
-|[**assignSectorToOperatorSectorsSectorIdAssignOperatorOperatorIdPut**](#assignsectortooperatorsectorssectoridassignoperatoroperatoridput) | **PUT** /sectors/{sector_id}/assign/operator/{operator_id} | Assign Sector To Operator|
-|[**assignSectorToTeamLeadSectorsSectorIdAssignTeamLeadTeamLeadIdPut**](#assignsectortoteamleadsectorssectoridassignteamleadteamleadidput) | **PUT** /sectors/{sector_id}/assign/team-lead/{team_lead_id} | Assign Sector To Team Lead|
-|[**createSectorSectorsPost**](#createsectorsectorspost) | **POST** /sectors/ | Create Sector|
-|[**deleteSectorSectorsSectorIdDelete**](#deletesectorsectorssectoriddelete) | **DELETE** /sectors/{sector_id} | Delete Sector|
-|[**getAllSectorsSectorsGet**](#getallsectorssectorsget) | **GET** /sectors/ | Get All Sectors|
-|[**getCompletelyUnassignedSectorsSectorsUnassignedAllGet**](#getcompletelyunassignedsectorssectorsunassignedallget) | **GET** /sectors/unassigned/all | Get Completely Unassigned Sectors|
-|[**getSectorByIdSectorsSectorIdGet**](#getsectorbyidsectorssectoridget) | **GET** /sectors/{sector_id} | Get Sector By Id|
-|[**getSectorsByNgoSectorsNgoNgoIdGet**](#getsectorsbyngosectorsngongoidget) | **GET** /sectors/ngo/{ngo_id} | Get Sectors By Ngo|
-|[**getSectorsByOperatorSectorsOperatorOperatorIdGet**](#getsectorsbyoperatorsectorsoperatoroperatoridget) | **GET** /sectors/operator/{operator_id} | Get Sectors By Operator|
-|[**getSectorsByStatusSectorsStatusStatusGet**](#getsectorsbystatussectorsstatusstatusget) | **GET** /sectors/status/{status} | Get Sectors By Status|
-|[**getSectorsByTeamLeadSectorsTeamLeadTeamLeadIdGet**](#getsectorsbyteamleadsectorsteamleadteamleadidget) | **GET** /sectors/team-lead/{team_lead_id} | Get Sectors By Team Lead|
-|[**getSectorsWithAssignmentsSectorsWithAssignmentsGet**](#getsectorswithassignmentssectorswithassignmentsget) | **GET** /sectors/with-assignments | Get Sectors With Assignments|
-|[**getUnassignedNgoSectorsSectorsUnassignedNgoGet**](#getunassignedngosectorssectorsunassignedngoget) | **GET** /sectors/unassigned/ngo | Get Unassigned Ngo Sectors|
-|[**getUnassignedOperatorSectorsSectorsUnassignedOperatorGet**](#getunassignedoperatorsectorssectorsunassignedoperatorget) | **GET** /sectors/unassigned/operator | Get Unassigned Operator Sectors|
-|[**getUnassignedTeamLeadSectorsSectorsUnassignedTeamLeadGet**](#getunassignedteamleadsectorssectorsunassignedteamleadget) | **GET** /sectors/unassigned/team-lead | Get Unassigned Team Lead Sectors|
-|[**updateSectorStatusSectorsSectorIdStatusStatusPut**](#updatesectorstatussectorssectoridstatusstatusput) | **PUT** /sectors/{sector_id}/status/{status} | Update Sector Status|
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**assignSectorToNgoSectorsSectorIdAssignNgoNgoIdPut**](SectorsApi.md#assignSectorToNgoSectorsSectorIdAssignNgoNgoIdPut) | **PUT** /sectors/{sector_id}/assign/ngo/{ngo_id} | Assign Sector To Ngo
+[**assignSectorToOperatorSectorsSectorIdAssignOperatorOperatorIdPut**](SectorsApi.md#assignSectorToOperatorSectorsSectorIdAssignOperatorOperatorIdPut) | **PUT** /sectors/{sector_id}/assign/operator/{operator_id} | Assign Sector To Operator
+[**assignSectorToTeamLeadSectorsSectorIdAssignTeamLeadTeamLeadIdPut**](SectorsApi.md#assignSectorToTeamLeadSectorsSectorIdAssignTeamLeadTeamLeadIdPut) | **PUT** /sectors/{sector_id}/assign/team-lead/{team_lead_id} | Assign Sector To Team Lead
+[**createSectorSectorsPost**](SectorsApi.md#createSectorSectorsPost) | **POST** /sectors/ | Create Sector
+[**deleteSectorSectorsSectorIdDelete**](SectorsApi.md#deleteSectorSectorsSectorIdDelete) | **DELETE** /sectors/{sector_id} | Delete Sector
+[**getAllSectorsSectorsGet**](SectorsApi.md#getAllSectorsSectorsGet) | **GET** /sectors/ | Get All Sectors
+[**getCompletelyUnassignedSectorsSectorsUnassignedAllGet**](SectorsApi.md#getCompletelyUnassignedSectorsSectorsUnassignedAllGet) | **GET** /sectors/unassigned/all | Get Completely Unassigned Sectors
+[**getSectorByIdSectorsSectorIdGet**](SectorsApi.md#getSectorByIdSectorsSectorIdGet) | **GET** /sectors/{sector_id} | Get Sector By Id
+[**getSectorsByNgoSectorsNgoNgoIdGet**](SectorsApi.md#getSectorsByNgoSectorsNgoNgoIdGet) | **GET** /sectors/ngo/{ngo_id} | Get Sectors By Ngo
+[**getSectorsByOperatorSectorsOperatorOperatorIdGet**](SectorsApi.md#getSectorsByOperatorSectorsOperatorOperatorIdGet) | **GET** /sectors/operator/{operator_id} | Get Sectors By Operator
+[**getSectorsByStatusSectorsStatusStatusGet**](SectorsApi.md#getSectorsByStatusSectorsStatusStatusGet) | **GET** /sectors/status/{status} | Get Sectors By Status
+[**getSectorsByTeamLeadSectorsTeamLeadTeamLeadIdGet**](SectorsApi.md#getSectorsByTeamLeadSectorsTeamLeadTeamLeadIdGet) | **GET** /sectors/team-lead/{team_lead_id} | Get Sectors By Team Lead
+[**getSectorsWithAssignmentsSectorsWithAssignmentsGet**](SectorsApi.md#getSectorsWithAssignmentsSectorsWithAssignmentsGet) | **GET** /sectors/with-assignments | Get Sectors With Assignments
+[**getUnassignedNgoSectorsSectorsUnassignedNgoGet**](SectorsApi.md#getUnassignedNgoSectorsSectorsUnassignedNgoGet) | **GET** /sectors/unassigned/ngo | Get Unassigned Ngo Sectors
+[**getUnassignedOperatorSectorsSectorsUnassignedOperatorGet**](SectorsApi.md#getUnassignedOperatorSectorsSectorsUnassignedOperatorGet) | **GET** /sectors/unassigned/operator | Get Unassigned Operator Sectors
+[**getUnassignedTeamLeadSectorsSectorsUnassignedTeamLeadGet**](SectorsApi.md#getUnassignedTeamLeadSectorsSectorsUnassignedTeamLeadGet) | **GET** /sectors/unassigned/team-lead | Get Unassigned Team Lead Sectors
+[**updateSectorStatusSectorsSectorIdStatusStatusPut**](SectorsApi.md#updateSectorStatusSectorsSectorIdStatusStatusPut) | **PUT** /sectors/{sector_id}/status/{status} | Update Sector Status
 
-# **assignSectorToNgoSectorsSectorIdAssignNgoNgoIdPut**
-> SectorResponse assignSectorToNgoSectorsSectorIdAssignNgoNgoIdPut()
+
+
+## assignSectorToNgoSectorsSectorIdAssignNgoNgoIdPut
+
+> SectorResponse assignSectorToNgoSectorsSectorIdAssignNgoNgoIdPut(sectorId, ngoId)
+
+Assign Sector To Ngo
 
 Assign a sector to an NGO.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-let sectorId: string; // (default to undefined)
-let ngoId: string; // (default to undefined)
-
-const { status, data } = await apiInstance.assignSectorToNgoSectorsSectorIdAssignNgoNgoIdPut(
-    sectorId,
-    ngoId
-);
+let apiInstance = new FastApi.SectorsApi();
+let sectorId = "sectorId_example"; // String | 
+let ngoId = "ngoId_example"; // String | 
+apiInstance.assignSectorToNgoSectorsSectorIdAssignNgoNgoIdPut(sectorId, ngoId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **sectorId** | [**string**] |  | defaults to undefined|
-| **ngoId** | [**string**] |  | defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sectorId** | **String**|  | 
+ **ngoId** | **String**|  | 
 
 ### Return type
 
-**SectorResponse**
+[**SectorResponse**](SectorResponse.md)
 
 ### Authorization
 
@@ -65,54 +67,46 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## assignSectorToOperatorSectorsSectorIdAssignOperatorOperatorIdPut
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> SectorResponse assignSectorToOperatorSectorsSectorIdAssignOperatorOperatorIdPut(sectorId, operatorId)
 
-# **assignSectorToOperatorSectorsSectorIdAssignOperatorOperatorIdPut**
-> SectorResponse assignSectorToOperatorSectorsSectorIdAssignOperatorOperatorIdPut()
+Assign Sector To Operator
 
 Assign a sector to an Operator.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-let sectorId: string; // (default to undefined)
-let operatorId: string; // (default to undefined)
-
-const { status, data } = await apiInstance.assignSectorToOperatorSectorsSectorIdAssignOperatorOperatorIdPut(
-    sectorId,
-    operatorId
-);
+let apiInstance = new FastApi.SectorsApi();
+let sectorId = "sectorId_example"; // String | 
+let operatorId = "operatorId_example"; // String | 
+apiInstance.assignSectorToOperatorSectorsSectorIdAssignOperatorOperatorIdPut(sectorId, operatorId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **sectorId** | [**string**] |  | defaults to undefined|
-| **operatorId** | [**string**] |  | defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sectorId** | **String**|  | 
+ **operatorId** | **String**|  | 
 
 ### Return type
 
-**SectorResponse**
+[**SectorResponse**](SectorResponse.md)
 
 ### Authorization
 
@@ -120,54 +114,46 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## assignSectorToTeamLeadSectorsSectorIdAssignTeamLeadTeamLeadIdPut
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> SectorResponse assignSectorToTeamLeadSectorsSectorIdAssignTeamLeadTeamLeadIdPut(sectorId, teamLeadId)
 
-# **assignSectorToTeamLeadSectorsSectorIdAssignTeamLeadTeamLeadIdPut**
-> SectorResponse assignSectorToTeamLeadSectorsSectorIdAssignTeamLeadTeamLeadIdPut()
+Assign Sector To Team Lead
 
 Assign a sector to a Team Lead.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-let sectorId: string; // (default to undefined)
-let teamLeadId: string; // (default to undefined)
-
-const { status, data } = await apiInstance.assignSectorToTeamLeadSectorsSectorIdAssignTeamLeadTeamLeadIdPut(
-    sectorId,
-    teamLeadId
-);
+let apiInstance = new FastApi.SectorsApi();
+let sectorId = "sectorId_example"; // String | 
+let teamLeadId = "teamLeadId_example"; // String | 
+apiInstance.assignSectorToTeamLeadSectorsSectorIdAssignTeamLeadTeamLeadIdPut(sectorId, teamLeadId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **sectorId** | [**string**] |  | defaults to undefined|
-| **teamLeadId** | [**string**] |  | defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sectorId** | **String**|  | 
+ **teamLeadId** | **String**|  | 
 
 ### Return type
 
-**SectorResponse**
+[**SectorResponse**](SectorResponse.md)
 
 ### Authorization
 
@@ -175,52 +161,44 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## createSectorSectorsPost
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
-
-# **createSectorSectorsPost**
 > SectorResponse createSectorSectorsPost(sectorCreate)
+
+Create Sector
 
 Create a new sector.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration,
-    SectorCreate
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-let sectorCreate: SectorCreate; //
-
-const { status, data } = await apiInstance.createSectorSectorsPost(
-    sectorCreate
-);
+let apiInstance = new FastApi.SectorsApi();
+let sectorCreate = new FastApi.SectorCreate(); // SectorCreate | 
+apiInstance.createSectorSectorsPost(sectorCreate, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **sectorCreate** | **SectorCreate**|  | |
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sectorCreate** | [**SectorCreate**](SectorCreate.md)|  | 
 
 ### Return type
 
-**SectorResponse**
+[**SectorResponse**](SectorResponse.md)
 
 ### Authorization
 
@@ -228,51 +206,44 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: application/json
- - **Accept**: application/json
+- **Content-Type**: application/json
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**201** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## deleteSectorSectorsSectorIdDelete
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> deleteSectorSectorsSectorIdDelete(sectorId)
 
-# **deleteSectorSectorsSectorIdDelete**
-> deleteSectorSectorsSectorIdDelete()
+Delete Sector
 
 Delete a sector.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-let sectorId: string; // (default to undefined)
-
-const { status, data } = await apiInstance.deleteSectorSectorsSectorIdDelete(
-    sectorId
-);
+let apiInstance = new FastApi.SectorsApi();
+let sectorId = "sectorId_example"; // String | 
+apiInstance.deleteSectorSectorsSectorIdDelete(sectorId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **sectorId** | [**string**] |  | defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sectorId** | **String**|  | 
 
 ### Return type
 
-void (empty response body)
+null (empty response body)
 
 ### Authorization
 
@@ -280,44 +251,40 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**204** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## getAllSectorsSectorsGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [SectorResponse] getAllSectorsSectorsGet()
 
-# **getAllSectorsSectorsGet**
-> Array<SectorResponse> getAllSectorsSectorsGet()
+Get All Sectors
 
 Get all sectors.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-const { status, data } = await apiInstance.getAllSectorsSectorsGet();
+let apiInstance = new FastApi.SectorsApi();
+apiInstance.getAllSectorsSectorsGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
-This endpoint does not have any parameters.
 
+This endpoint does not need any parameter.
 
 ### Return type
 
-**Array<SectorResponse>**
+[**[SectorResponse]**](SectorResponse.md)
 
 ### Authorization
 
@@ -325,43 +292,40 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
+## getCompletelyUnassignedSectorsSectorsUnassignedAllGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [SectorResponse] getCompletelyUnassignedSectorsSectorsUnassignedAllGet()
 
-# **getCompletelyUnassignedSectorsSectorsUnassignedAllGet**
-> Array<SectorResponse> getCompletelyUnassignedSectorsSectorsUnassignedAllGet()
+Get Completely Unassigned Sectors
 
 Get sectors that are not assigned to any user (NGO, Team Lead, or Operator).
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-const { status, data } = await apiInstance.getCompletelyUnassignedSectorsSectorsUnassignedAllGet();
+let apiInstance = new FastApi.SectorsApi();
+apiInstance.getCompletelyUnassignedSectorsSectorsUnassignedAllGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
-This endpoint does not have any parameters.
 
+This endpoint does not need any parameter.
 
 ### Return type
 
-**Array<SectorResponse>**
+[**[SectorResponse]**](SectorResponse.md)
 
 ### Authorization
 
@@ -369,50 +333,44 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
+## getSectorByIdSectorsSectorIdGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> SectorResponse getSectorByIdSectorsSectorIdGet(sectorId)
 
-# **getSectorByIdSectorsSectorIdGet**
-> SectorResponse getSectorByIdSectorsSectorIdGet()
+Get Sector By Id
 
 Get a sector by ID.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-let sectorId: string; // (default to undefined)
-
-const { status, data } = await apiInstance.getSectorByIdSectorsSectorIdGet(
-    sectorId
-);
+let apiInstance = new FastApi.SectorsApi();
+let sectorId = "sectorId_example"; // String | 
+apiInstance.getSectorByIdSectorsSectorIdGet(sectorId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **sectorId** | [**string**] |  | defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sectorId** | **String**|  | 
 
 ### Return type
 
-**SectorResponse**
+[**SectorResponse**](SectorResponse.md)
 
 ### Authorization
 
@@ -420,51 +378,44 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## getSectorsByNgoSectorsNgoNgoIdGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [SectorResponse] getSectorsByNgoSectorsNgoNgoIdGet(ngoId)
 
-# **getSectorsByNgoSectorsNgoNgoIdGet**
-> Array<SectorResponse> getSectorsByNgoSectorsNgoNgoIdGet()
+Get Sectors By Ngo
 
 Get all sectors assigned to a specific NGO.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-let ngoId: string; // (default to undefined)
-
-const { status, data } = await apiInstance.getSectorsByNgoSectorsNgoNgoIdGet(
-    ngoId
-);
+let apiInstance = new FastApi.SectorsApi();
+let ngoId = "ngoId_example"; // String | 
+apiInstance.getSectorsByNgoSectorsNgoNgoIdGet(ngoId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **ngoId** | [**string**] |  | defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ngoId** | **String**|  | 
 
 ### Return type
 
-**Array<SectorResponse>**
+[**[SectorResponse]**](SectorResponse.md)
 
 ### Authorization
 
@@ -472,51 +423,44 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## getSectorsByOperatorSectorsOperatorOperatorIdGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [SectorResponse] getSectorsByOperatorSectorsOperatorOperatorIdGet(operatorId)
 
-# **getSectorsByOperatorSectorsOperatorOperatorIdGet**
-> Array<SectorResponse> getSectorsByOperatorSectorsOperatorOperatorIdGet()
+Get Sectors By Operator
 
 Get all sectors assigned to a specific Operator.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-let operatorId: string; // (default to undefined)
-
-const { status, data } = await apiInstance.getSectorsByOperatorSectorsOperatorOperatorIdGet(
-    operatorId
-);
+let apiInstance = new FastApi.SectorsApi();
+let operatorId = "operatorId_example"; // String | 
+apiInstance.getSectorsByOperatorSectorsOperatorOperatorIdGet(operatorId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **operatorId** | [**string**] |  | defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **operatorId** | **String**|  | 
 
 ### Return type
 
-**Array<SectorResponse>**
+[**[SectorResponse]**](SectorResponse.md)
 
 ### Authorization
 
@@ -524,51 +468,44 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## getSectorsByStatusSectorsStatusStatusGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [SectorResponse] getSectorsByStatusSectorsStatusStatusGet(status)
 
-# **getSectorsByStatusSectorsStatusStatusGet**
-> Array<SectorResponse> getSectorsByStatusSectorsStatusStatusGet()
+Get Sectors By Status
 
 Get all sectors with a specific status.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-let status: SectorStatus; // (default to undefined)
-
-const { status, data } = await apiInstance.getSectorsByStatusSectorsStatusStatusGet(
-    status
-);
+let apiInstance = new FastApi.SectorsApi();
+let status = new FastApi.SectorStatus(); // SectorStatus | 
+apiInstance.getSectorsByStatusSectorsStatusStatusGet(status, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **status** | **SectorStatus** |  | defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **status** | [**SectorStatus**](.md)|  | 
 
 ### Return type
 
-**Array<SectorResponse>**
+[**[SectorResponse]**](SectorResponse.md)
 
 ### Authorization
 
@@ -576,51 +513,44 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## getSectorsByTeamLeadSectorsTeamLeadTeamLeadIdGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [SectorResponse] getSectorsByTeamLeadSectorsTeamLeadTeamLeadIdGet(teamLeadId)
 
-# **getSectorsByTeamLeadSectorsTeamLeadTeamLeadIdGet**
-> Array<SectorResponse> getSectorsByTeamLeadSectorsTeamLeadTeamLeadIdGet()
+Get Sectors By Team Lead
 
 Get all sectors assigned to a specific Team Lead.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-let teamLeadId: string; // (default to undefined)
-
-const { status, data } = await apiInstance.getSectorsByTeamLeadSectorsTeamLeadTeamLeadIdGet(
-    teamLeadId
-);
+let apiInstance = new FastApi.SectorsApi();
+let teamLeadId = "teamLeadId_example"; // String | 
+apiInstance.getSectorsByTeamLeadSectorsTeamLeadTeamLeadIdGet(teamLeadId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **teamLeadId** | [**string**] |  | defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **teamLeadId** | **String**|  | 
 
 ### Return type
 
-**Array<SectorResponse>**
+[**[SectorResponse]**](SectorResponse.md)
 
 ### Authorization
 
@@ -628,44 +558,40 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## getSectorsWithAssignmentsSectorsWithAssignmentsGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [SectorResponse] getSectorsWithAssignmentsSectorsWithAssignmentsGet()
 
-# **getSectorsWithAssignmentsSectorsWithAssignmentsGet**
-> Array<SectorResponse> getSectorsWithAssignmentsSectorsWithAssignmentsGet()
+Get Sectors With Assignments
 
 Get all sectors with their assigned users loaded.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-const { status, data } = await apiInstance.getSectorsWithAssignmentsSectorsWithAssignmentsGet();
+let apiInstance = new FastApi.SectorsApi();
+apiInstance.getSectorsWithAssignmentsSectorsWithAssignmentsGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
-This endpoint does not have any parameters.
 
+This endpoint does not need any parameter.
 
 ### Return type
 
-**Array<SectorResponse>**
+[**[SectorResponse]**](SectorResponse.md)
 
 ### Authorization
 
@@ -673,43 +599,40 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
+## getUnassignedNgoSectorsSectorsUnassignedNgoGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [SectorResponse] getUnassignedNgoSectorsSectorsUnassignedNgoGet()
 
-# **getUnassignedNgoSectorsSectorsUnassignedNgoGet**
-> Array<SectorResponse> getUnassignedNgoSectorsSectorsUnassignedNgoGet()
+Get Unassigned Ngo Sectors
 
 Get sectors that are not assigned to any NGO.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-const { status, data } = await apiInstance.getUnassignedNgoSectorsSectorsUnassignedNgoGet();
+let apiInstance = new FastApi.SectorsApi();
+apiInstance.getUnassignedNgoSectorsSectorsUnassignedNgoGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
-This endpoint does not have any parameters.
 
+This endpoint does not need any parameter.
 
 ### Return type
 
-**Array<SectorResponse>**
+[**[SectorResponse]**](SectorResponse.md)
 
 ### Authorization
 
@@ -717,43 +640,40 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
+## getUnassignedOperatorSectorsSectorsUnassignedOperatorGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [SectorResponse] getUnassignedOperatorSectorsSectorsUnassignedOperatorGet()
 
-# **getUnassignedOperatorSectorsSectorsUnassignedOperatorGet**
-> Array<SectorResponse> getUnassignedOperatorSectorsSectorsUnassignedOperatorGet()
+Get Unassigned Operator Sectors
 
 Get sectors that are not assigned to any Operator.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-const { status, data } = await apiInstance.getUnassignedOperatorSectorsSectorsUnassignedOperatorGet();
+let apiInstance = new FastApi.SectorsApi();
+apiInstance.getUnassignedOperatorSectorsSectorsUnassignedOperatorGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
-This endpoint does not have any parameters.
 
+This endpoint does not need any parameter.
 
 ### Return type
 
-**Array<SectorResponse>**
+[**[SectorResponse]**](SectorResponse.md)
 
 ### Authorization
 
@@ -761,43 +681,40 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
+## getUnassignedTeamLeadSectorsSectorsUnassignedTeamLeadGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [SectorResponse] getUnassignedTeamLeadSectorsSectorsUnassignedTeamLeadGet()
 
-# **getUnassignedTeamLeadSectorsSectorsUnassignedTeamLeadGet**
-> Array<SectorResponse> getUnassignedTeamLeadSectorsSectorsUnassignedTeamLeadGet()
+Get Unassigned Team Lead Sectors
 
 Get sectors that are not assigned to any Team Lead.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-const { status, data } = await apiInstance.getUnassignedTeamLeadSectorsSectorsUnassignedTeamLeadGet();
+let apiInstance = new FastApi.SectorsApi();
+apiInstance.getUnassignedTeamLeadSectorsSectorsUnassignedTeamLeadGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
-This endpoint does not have any parameters.
 
+This endpoint does not need any parameter.
 
 ### Return type
 
-**Array<SectorResponse>**
+[**[SectorResponse]**](SectorResponse.md)
 
 ### Authorization
 
@@ -805,53 +722,46 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
+## updateSectorStatusSectorsSectorIdStatusStatusPut
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> SectorResponse updateSectorStatusSectorsSectorIdStatusStatusPut(sectorId, status)
 
-# **updateSectorStatusSectorsSectorIdStatusStatusPut**
-> SectorResponse updateSectorStatusSectorsSectorIdStatusStatusPut()
+Update Sector Status
 
 Update the status of a sector.
 
 ### Example
 
-```typescript
-import {
-    SectorsApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new SectorsApi(configuration);
-
-let sectorId: string; // (default to undefined)
-let status: SectorStatus; // (default to undefined)
-
-const { status, data } = await apiInstance.updateSectorStatusSectorsSectorIdStatusStatusPut(
-    sectorId,
-    status
-);
+let apiInstance = new FastApi.SectorsApi();
+let sectorId = "sectorId_example"; // String | 
+let status = new FastApi.SectorStatus(); // SectorStatus | 
+apiInstance.updateSectorStatusSectorsSectorIdStatusStatusPut(sectorId, status, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **sectorId** | [**string**] |  | defaults to undefined|
-| **status** | **SectorStatus** |  | defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **sectorId** | **String**|  | 
+ **status** | [**SectorStatus**](.md)|  | 
 
 ### Return type
 
-**SectorResponse**
+[**SectorResponse**](SectorResponse.md)
 
 ### Authorization
 
@@ -859,15 +769,6 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+- **Content-Type**: Not defined
+- **Accept**: application/json
 

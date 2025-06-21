@@ -1,14 +1,14 @@
-# SectorStatus
-
+# FastApi.SectorStatus
 
 ## Enum
 
-* `Mined` (value: `'mined'`)
 
-* `Demined` (value: `'demined'`)
+* `mined` (value: `"mined"`)
 
-* `Clear` (value: `'clear'`)
+* `demined` (value: `"demined"`)
 
-* `Probable` (value: `'probable'`)
+* `clear` (value: `"clear"`)
 
-[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+* `probable` (value: `"probable"`)
+
+

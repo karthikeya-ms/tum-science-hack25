@@ -66,9 +66,9 @@ generate-client: download-spec
     # Generate TypeScript Axios client
 	npx @openapitools/openapi-generator-cli generate \
         -i $(OPENAPI_SPEC_FILE) \
-        -g typescript-axios \
+        -g javascript \
         -o $(CLIENT_OUTPUT_DIR) \
-        --additional-properties=apiPackage=api,modelPackage=models,withInterfaces=true,withSeparateModelsAndApi=true
+        --additional-properties=auseES6=true,apiPackage=api,modelPackage=models
     
 	@echo "Installing generated client dependencies..."
 	npm install axios
@@ -90,9 +90,9 @@ generate-client-docker: download-spec
         -v $(PWD):/local \
         openapitools/openapi-generator-cli generate \
         -i /local/$(OPENAPI_SPEC_FILE) \
-        -g typescript-axios \
+        -g javascript \
         -o /local/$(CLIENT_OUTPUT_DIR) \
-        --additional-properties=apiPackage=api,modelPackage=models,withInterfaces=true,withSeparateModelsAndApi=true
+        --additional-properties=useES6=true,apiPackage=api,modelPackage=models
     
 	@echo "Installing generated client dependencies..."
 	npm install axios

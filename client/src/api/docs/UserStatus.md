@@ -1,12 +1,12 @@
-# UserStatus
-
+# FastApi.UserStatus
 
 ## Enum
 
-* `Active` (value: `'active'`)
 
-* `Inactive` (value: `'inactive'`)
+* `active` (value: `"active"`)
 
-* `Suspended` (value: `'suspended'`)
+* `inactive` (value: `"inactive"`)
 
-[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+* `suspended` (value: `"suspended"`)
+
+

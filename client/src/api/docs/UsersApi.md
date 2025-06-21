@@ -1,46 +1,53 @@
-# UsersApi
+# FastApi.UsersApi
 
 All URIs are relative to *http://localhost*
 
-|Method | HTTP request | Description|
-|------------- | ------------- | -------------|
-|[**getActiveUsersUsersActiveAllGet**](#getactiveusersusersactiveallget) | **GET** /users/active/all | Get Active Users|
-|[**getAllUsersUsersGet**](#getallusersusersget) | **GET** /users/ | Get All Users|
-|[**getInactiveUsersUsersInactiveAllGet**](#getinactiveusersusersinactiveallget) | **GET** /users/inactive/all | Get Inactive Users|
-|[**getNgosUsersNgosAllGet**](#getngosusersngosallget) | **GET** /users/ngos/all | Get Ngos|
-|[**getOperatorsUsersOperatorsAllGet**](#getoperatorsusersoperatorsallget) | **GET** /users/operators/all | Get Operators|
-|[**getTeamLeadsUsersTeamLeadsAllGet**](#getteamleadsusersteamleadsallget) | **GET** /users/team-leads/all | Get Team Leads|
-|[**getUserByIdUsersUserIdGet**](#getuserbyidusersuseridget) | **GET** /users/{user_id} | Get User By Id|
-|[**getUsersByParentUsersParentParentUserIdGet**](#getusersbyparentusersparentparentuseridget) | **GET** /users/parent/{parent_user_id} | Get Users By Parent|
-|[**getUsersByRoleUsersRoleRoleGet**](#getusersbyroleusersroleroleget) | **GET** /users/role/{role} | Get Users By Role|
-|[**getUsersByStatusUsersStatusStatusGet**](#getusersbystatususersstatusstatusget) | **GET** /users/status/{status} | Get Users By Status|
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**getActiveUsersUsersActiveAllGet**](UsersApi.md#getActiveUsersUsersActiveAllGet) | **GET** /users/active/all | Get Active Users
+[**getAllUsersUsersGet**](UsersApi.md#getAllUsersUsersGet) | **GET** /users/ | Get All Users
+[**getInactiveUsersUsersInactiveAllGet**](UsersApi.md#getInactiveUsersUsersInactiveAllGet) | **GET** /users/inactive/all | Get Inactive Users
+[**getNgosUsersNgosAllGet**](UsersApi.md#getNgosUsersNgosAllGet) | **GET** /users/ngos/all | Get Ngos
+[**getOperatorsUsersOperatorsAllGet**](UsersApi.md#getOperatorsUsersOperatorsAllGet) | **GET** /users/operators/all | Get Operators
+[**getTeamLeadsUsersTeamLeadsAllGet**](UsersApi.md#getTeamLeadsUsersTeamLeadsAllGet) | **GET** /users/team-leads/all | Get Team Leads
+[**getUserByIdUsersUserIdGet**](UsersApi.md#getUserByIdUsersUserIdGet) | **GET** /users/{user_id} | Get User By Id
+[**getUserByUsernameUsersUsernameUsernameGet**](UsersApi.md#getUserByUsernameUsersUsernameUsernameGet) | **GET** /users/username/{username} | Get User By Username
+[**getUsersByParentUsersParentParentUserIdGet**](UsersApi.md#getUsersByParentUsersParentParentUserIdGet) | **GET** /users/parent/{parent_user_id} | Get Users By Parent
+[**getUsersByRoleUsersRoleRoleGet**](UsersApi.md#getUsersByRoleUsersRoleRoleGet) | **GET** /users/role/{role} | Get Users By Role
+[**getUsersByStatusUsersStatusStatusGet**](UsersApi.md#getUsersByStatusUsersStatusStatusGet) | **GET** /users/status/{status} | Get Users By Status
 
-# **getActiveUsersUsersActiveAllGet**
-> Array<UserResponse> getActiveUsersUsersActiveAllGet()
+
+
+## getActiveUsersUsersActiveAllGet
+
+> [UserResponse] getActiveUsersUsersActiveAllGet()
+
+Get Active Users
 
 Get all active users.
 
 ### Example
 
-```typescript
-import {
-    UsersApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new UsersApi(configuration);
-
-const { status, data } = await apiInstance.getActiveUsersUsersActiveAllGet();
+let apiInstance = new FastApi.UsersApi();
+apiInstance.getActiveUsersUsersActiveAllGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
-This endpoint does not have any parameters.
 
+This endpoint does not need any parameter.
 
 ### Return type
 
-**Array<UserResponse>**
+[**[UserResponse]**](UserResponse.md)
 
 ### Authorization
 
@@ -48,43 +55,40 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
+## getAllUsersUsersGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [UserResponse] getAllUsersUsersGet()
 
-# **getAllUsersUsersGet**
-> Array<UserResponse> getAllUsersUsersGet()
+Get All Users
 
 Get all users.
 
 ### Example
 
-```typescript
-import {
-    UsersApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new UsersApi(configuration);
-
-const { status, data } = await apiInstance.getAllUsersUsersGet();
+let apiInstance = new FastApi.UsersApi();
+apiInstance.getAllUsersUsersGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
-This endpoint does not have any parameters.
 
+This endpoint does not need any parameter.
 
 ### Return type
 
-**Array<UserResponse>**
+[**[UserResponse]**](UserResponse.md)
 
 ### Authorization
 
@@ -92,43 +96,40 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
+## getInactiveUsersUsersInactiveAllGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [UserResponse] getInactiveUsersUsersInactiveAllGet()
 
-# **getInactiveUsersUsersInactiveAllGet**
-> Array<UserResponse> getInactiveUsersUsersInactiveAllGet()
+Get Inactive Users
 
 Get all inactive users.
 
 ### Example
 
-```typescript
-import {
-    UsersApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new UsersApi(configuration);
-
-const { status, data } = await apiInstance.getInactiveUsersUsersInactiveAllGet();
+let apiInstance = new FastApi.UsersApi();
+apiInstance.getInactiveUsersUsersInactiveAllGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
-This endpoint does not have any parameters.
 
+This endpoint does not need any parameter.
 
 ### Return type
 
-**Array<UserResponse>**
+[**[UserResponse]**](UserResponse.md)
 
 ### Authorization
 
@@ -136,43 +137,40 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
+## getNgosUsersNgosAllGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [UserResponse] getNgosUsersNgosAllGet()
 
-# **getNgosUsersNgosAllGet**
-> Array<UserResponse> getNgosUsersNgosAllGet()
+Get Ngos
 
 Get all NGO users.
 
 ### Example
 
-```typescript
-import {
-    UsersApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new UsersApi(configuration);
-
-const { status, data } = await apiInstance.getNgosUsersNgosAllGet();
+let apiInstance = new FastApi.UsersApi();
+apiInstance.getNgosUsersNgosAllGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
-This endpoint does not have any parameters.
 
+This endpoint does not need any parameter.
 
 ### Return type
 
-**Array<UserResponse>**
+[**[UserResponse]**](UserResponse.md)
 
 ### Authorization
 
@@ -180,50 +178,46 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
+## getOperatorsUsersOperatorsAllGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [UserResponse] getOperatorsUsersOperatorsAllGet(opts)
 
-# **getOperatorsUsersOperatorsAllGet**
-> Array<UserResponse> getOperatorsUsersOperatorsAllGet()
+Get Operators
 
 Get all Operator users, optionally filtered by Team Lead.
 
 ### Example
 
-```typescript
-import {
-    UsersApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new UsersApi(configuration);
-
-let teamLeadId: string; // (optional) (default to undefined)
-
-const { status, data } = await apiInstance.getOperatorsUsersOperatorsAllGet(
-    teamLeadId
-);
+let apiInstance = new FastApi.UsersApi();
+let opts = {
+  'teamLeadId': "teamLeadId_example" // String | 
+};
+apiInstance.getOperatorsUsersOperatorsAllGet(opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **teamLeadId** | [**string**] |  | (optional) defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **teamLeadId** | **String**|  | [optional] 
 
 ### Return type
 
-**Array<UserResponse>**
+[**[UserResponse]**](UserResponse.md)
 
 ### Authorization
 
@@ -231,51 +225,46 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## getTeamLeadsUsersTeamLeadsAllGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [UserResponse] getTeamLeadsUsersTeamLeadsAllGet(opts)
 
-# **getTeamLeadsUsersTeamLeadsAllGet**
-> Array<UserResponse> getTeamLeadsUsersTeamLeadsAllGet()
+Get Team Leads
 
 Get all Team Lead users, optionally filtered by NGO.
 
 ### Example
 
-```typescript
-import {
-    UsersApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new UsersApi(configuration);
-
-let ngoId: string; // (optional) (default to undefined)
-
-const { status, data } = await apiInstance.getTeamLeadsUsersTeamLeadsAllGet(
-    ngoId
-);
+let apiInstance = new FastApi.UsersApi();
+let opts = {
+  'ngoId': "ngoId_example" // String | 
+};
+apiInstance.getTeamLeadsUsersTeamLeadsAllGet(opts, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **ngoId** | [**string**] |  | (optional) defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **ngoId** | **String**|  | [optional] 
 
 ### Return type
 
-**Array<UserResponse>**
+[**[UserResponse]**](UserResponse.md)
 
 ### Authorization
 
@@ -283,51 +272,44 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## getUserByIdUsersUserIdGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> UserResponse getUserByIdUsersUserIdGet(userId)
 
-# **getUserByIdUsersUserIdGet**
-> UserResponse getUserByIdUsersUserIdGet()
+Get User By Id
 
 Get a user by ID.
 
 ### Example
 
-```typescript
-import {
-    UsersApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new UsersApi(configuration);
-
-let userId: string; // (default to undefined)
-
-const { status, data } = await apiInstance.getUserByIdUsersUserIdGet(
-    userId
-);
+let apiInstance = new FastApi.UsersApi();
+let userId = "userId_example"; // String | 
+apiInstance.getUserByIdUsersUserIdGet(userId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **userId** | [**string**] |  | defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **userId** | **String**|  | 
 
 ### Return type
 
-**UserResponse**
+[**UserResponse**](UserResponse.md)
 
 ### Authorization
 
@@ -335,51 +317,89 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## getUserByUsernameUsersUsernameUsernameGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [UserResponse] getUserByUsernameUsersUsernameUsernameGet(username)
 
-# **getUsersByParentUsersParentParentUserIdGet**
-> Array<UserResponse> getUsersByParentUsersParentParentUserIdGet()
+Get User By Username
+
+Get users by username.
+
+### Example
+
+```javascript
+import FastApi from 'fast_api';
+
+let apiInstance = new FastApi.UsersApi();
+let username = "username_example"; // String | 
+apiInstance.getUserByUsernameUsersUsernameUsernameGet(username, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
+```
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **username** | **String**|  | 
+
+### Return type
+
+[**[UserResponse]**](UserResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+
+## getUsersByParentUsersParentParentUserIdGet
+
+> [UserResponse] getUsersByParentUsersParentParentUserIdGet(parentUserId)
+
+Get Users By Parent
 
 Get all users under a specific parent user.
 
 ### Example
 
-```typescript
-import {
-    UsersApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new UsersApi(configuration);
-
-let parentUserId: string; // (default to undefined)
-
-const { status, data } = await apiInstance.getUsersByParentUsersParentParentUserIdGet(
-    parentUserId
-);
+let apiInstance = new FastApi.UsersApi();
+let parentUserId = "parentUserId_example"; // String | 
+apiInstance.getUsersByParentUsersParentParentUserIdGet(parentUserId, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **parentUserId** | [**string**] |  | defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **parentUserId** | **String**|  | 
 
 ### Return type
 
-**Array<UserResponse>**
+[**[UserResponse]**](UserResponse.md)
 
 ### Authorization
 
@@ -387,51 +407,44 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## getUsersByRoleUsersRoleRoleGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [UserResponse] getUsersByRoleUsersRoleRoleGet(role)
 
-# **getUsersByRoleUsersRoleRoleGet**
-> Array<UserResponse> getUsersByRoleUsersRoleRoleGet()
+Get Users By Role
 
 Get all users with a specific role.
 
 ### Example
 
-```typescript
-import {
-    UsersApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new UsersApi(configuration);
-
-let role: UserRole; // (default to undefined)
-
-const { status, data } = await apiInstance.getUsersByRoleUsersRoleRoleGet(
-    role
-);
+let apiInstance = new FastApi.UsersApi();
+let role = new FastApi.UserRole(); // UserRole | 
+apiInstance.getUsersByRoleUsersRoleRoleGet(role, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **role** | **UserRole** |  | defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **role** | [**UserRole**](.md)|  | 
 
 ### Return type
 
-**Array<UserResponse>**
+[**[UserResponse]**](UserResponse.md)
 
 ### Authorization
 
@@ -439,51 +452,44 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
+- **Content-Type**: Not defined
+- **Accept**: application/json
 
 
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
+## getUsersByStatusUsersStatusStatusGet
 
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+> [UserResponse] getUsersByStatusUsersStatusStatusGet(status)
 
-# **getUsersByStatusUsersStatusStatusGet**
-> Array<UserResponse> getUsersByStatusUsersStatusStatusGet()
+Get Users By Status
 
 Get all users with a specific status.
 
 ### Example
 
-```typescript
-import {
-    UsersApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new UsersApi(configuration);
-
-let status: UserStatus; // (default to undefined)
-
-const { status, data } = await apiInstance.getUsersByStatusUsersStatusStatusGet(
-    status
-);
+let apiInstance = new FastApi.UsersApi();
+let status = new FastApi.UserStatus(); // UserStatus | 
+apiInstance.getUsersByStatusUsersStatusStatusGet(status, (error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
 
-|Name | Type | Description  | Notes|
-|------------- | ------------- | ------------- | -------------|
-| **status** | **UserStatus** |  | defaults to undefined|
 
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **status** | [**UserStatus**](.md)|  | 
 
 ### Return type
 
-**Array<UserResponse>**
+[**[UserResponse]**](UserResponse.md)
 
 ### Authorization
 
@@ -491,15 +497,6 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-|**422** | Validation Error |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+- **Content-Type**: Not defined
+- **Accept**: application/json
 

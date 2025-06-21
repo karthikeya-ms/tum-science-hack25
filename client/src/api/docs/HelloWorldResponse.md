@@ -1,20 +1,9 @@
-# HelloWorldResponse
-
+# FastApi.HelloWorldResponse
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**message** | **string** |  | [default to undefined]
+**message** | **String** |  | 
 
-## Example
 
-```typescript
-import { HelloWorldResponse } from './api';
-
-const instance: HelloWorldResponse = {
-    message,
-};
-```
-
-[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)

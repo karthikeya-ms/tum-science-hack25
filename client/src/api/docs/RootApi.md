@@ -1,36 +1,41 @@
-# RootApi
+# FastApi.RootApi
 
 All URIs are relative to *http://localhost*
 
-|Method | HTTP request | Description|
-|------------- | ------------- | -------------|
-|[**readRootGet**](#readrootget) | **GET** / | Read Root|
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**readRootGet**](RootApi.md#readRootGet) | **GET** / | Read Root
 
-# **readRootGet**
+
+
+## readRootGet
+
 > HelloWorldResponse readRootGet()
 
+Read Root
 
 ### Example
 
-```typescript
-import {
-    RootApi,
-    Configuration
-} from './api';
+```javascript
+import FastApi from 'fast_api';
 
-const configuration = new Configuration();
-const apiInstance = new RootApi(configuration);
-
-const { status, data } = await apiInstance.readRootGet();
+let apiInstance = new FastApi.RootApi();
+apiInstance.readRootGet((error, data, response) => {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+});
 ```
 
 ### Parameters
-This endpoint does not have any parameters.
 
+This endpoint does not need any parameter.
 
 ### Return type
 
-**HelloWorldResponse**
+[**HelloWorldResponse**](HelloWorldResponse.md)
 
 ### Authorization
 
@@ -38,14 +43,6 @@ No authorization required
 
 ### HTTP request headers
 
- - **Content-Type**: Not defined
- - **Accept**: application/json
-
-
-### HTTP response details
-| Status code | Description | Response headers |
-|-------------|-------------|------------------|
-|**200** | Successful Response |  -  |
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+- **Content-Type**: Not defined
+- **Accept**: application/json
 

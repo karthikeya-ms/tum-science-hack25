@@ -1,14 +1,14 @@
-# UserRole
-
+# FastApi.UserRole
 
 ## Enum
 
-* `Operator` (value: `'operator'`)
 
-* `TeamLead` (value: `'Team-Lead'`)
+* `operator` (value: `"operator"`)
 
-* `Ngo` (value: `'ngo'`)
+* `Team-Lead` (value: `"Team-Lead"`)
 
-* `Ministry` (value: `'ministry'`)
+* `ngo` (value: `"ngo"`)
 
-[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+* `ministry` (value: `"ministry"`)
+
+
