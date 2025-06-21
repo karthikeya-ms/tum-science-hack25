@@ -44,7 +44,8 @@ class SectorCreate(BaseModel):
         description="The initial risk probability for the sector (between 0.0 and 1.0).",
     )
     assigned_to_ngo_id: Optional[UUID] = Field(
-        default=None, description="Optional: The ID of the NGO to assign this sector to."
+        default=None,
+        description="Optional: The ID of the NGO to assign this sector to.",
     )
     assigned_to_team_lead_id: Optional[UUID] = Field(
         default=None,
