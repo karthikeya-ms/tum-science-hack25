@@ -1,0 +1,18 @@
+# filepath: /home/abhijeet/Documents/Programs/tum-science-hack25/client/.dockerignore
+# Ignore node_modules, as it will be installed inside the container
+node_modules
+
+# Ignore build artifacts
+dist
+dist-ssr
+
+# Ignore local environment files and logs
+*.local
+logs
+*.log
+npm-debug.log*
+
+# Ignore IDE and OS files
+.vscode
+.idea
+.DS_Store

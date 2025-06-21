@@ -29,9 +29,8 @@ services:
     healthcheck:
       test: "curl -f http://client:3000 || exit 1"
       interval: 5s
-    entrypoint: npm run dev
     environment:
-      NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL:-https://api.demining.tum.de}
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-https://api.demining.tum.de}
     networks:
       - server
 
