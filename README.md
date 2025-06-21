@@ -111,5 +111,3 @@ tum-science-hack25/       # Project root
 
 ---
 
-Good luck, and happy hacking! 🎉
-
