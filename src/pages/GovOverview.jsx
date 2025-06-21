@@ -1,7 +1,7 @@
-
 // src/pages/GovOverview.jsx
 import React, { useState } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import SimpleMap from "./SimpleMap";
 
 export default function GovOverview() {
   const stats = [
@@ -58,6 +58,12 @@ export default function GovOverview() {
           </div>
         ))}
       </div>
+
+      {/* Interactive OpenStreetMap */}
+      <section className="bg-gray-700 p-6 rounded-lg">
+        <h2 className="text-xl font-semibold mb-4">Operations Area - Kharkiv Region</h2>
+        <SimpleMap />
+      </section>
 
       {/* Interactive Map Display */}
       {mapSrc && (

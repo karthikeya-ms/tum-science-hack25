@@ -1,0 +1,16 @@
+torch
+numpy
+pandas
+matplotlib
+fastapi
+uvicorn
+seaborn
+
+[cuda]
+torch@ https://download.pytorch.org/whl/cu121
+
+[dev]
+pytest
+black
+flake8
+coverage
