@@ -1,14 +1,16 @@
-// src/pages/Login.jsx
 import React, { useState } from "react";
 
 export default function Login({ onLogin }) {
-  const [role, setRole] = useState("ngo");
+  const [role, setRole] = useState("operator");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // In a real app you'd verify credentials; here we just pass them up
+    if (!username.trim() || !password.trim()) {
+      alert("Please enter both username and password");
+      return;
+    }
     onLogin({ role, username });
   };
 
@@ -24,9 +26,10 @@ export default function Login({ onLogin }) {
               onChange={(e) => setRole(e.target.value)}
               className="w-full bg-gray-600 text-white p-2 rounded"
             >
+              <option value="operator">Operator</option>
+              <option value="teamLead">Team Lead</option>
               <option value="ngo">NGO / Partner</option>
               <option value="gov">Government / UN</option>
-              {/* you can add operator & teamLead here later */}
             </select>
           </div>
           <div>
