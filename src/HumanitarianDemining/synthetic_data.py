@@ -48,7 +48,12 @@ while x < maxx:
         cell = box(x, y, x + resolution, y + resolution)
         if mine_zone.contains(cell):
             risk = max(0, min(1, random.gauss(0.5, 0.2)))
-            grid_cells.append({"geometry": cell, "risk": risk})
+        else:
+            risk = 0
+        grid_cells.append({
+            'geometry': cell,
+            'risk': risk
+        })
         y += resolution
     x += resolution
 
@@ -61,8 +66,8 @@ mine_risk_gdf = gpd.overlay(mine_risk_gdf, ukraine, how="intersection")
 mine_risk_gdf.to_file("synthetic_kharkiv_mine_risk.json", driver="GeoJSON")
 
 fig, ax = plt.subplots(figsize=(10, 10))
-ukraine.boundary.plot(ax=ax, color='black')
-ukraine.plot(ax=ax, color='white', alpha=0.2)
+# ukraine.boundary.plot(ax=ax, color='black')
+# ukraine.plot(ax=ax, color='white', alpha=0.2)
 mine_risk_gdf.plot(column='risk', cmap='Reds', ax=ax, legend=True)
 plt.title("Synthetic Landmine Risk (~31,000 km²) Around Kharkiv")
 plt.xlabel("Longitude")
