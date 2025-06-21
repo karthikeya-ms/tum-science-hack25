@@ -1,5 +1,3 @@
-import os
-import json
 import string
 from sqlalchemy.orm import sessionmaker
 
@@ -29,17 +27,15 @@ def seed_users():
 
     # user_repository.delete_many()
 
-
-
     # Gormint Aunty
-    gormint_aunty =  {
+    gormint_aunty = {
         "userName": "Ministry of Demining",
         "email": "Demining@gov.com",
         "role": UserRole.MINISTRY,
         "status": UserStatus.ACTIVE,
     }
 
-    try:        
+    try:
         print("Adding Ministry...")
         gormint_aunty = user_repository.insert_one(gormint_aunty)
         print(f"Ministry added with ID: {gormint_aunty.id}")
@@ -48,7 +44,7 @@ def seed_users():
         print(f"Error adding Gormint Aunty: {e}")
         session.rollback()
 
-    I, J = 4, 4
+    maxTeamLeads = 4
 
     for letter in string.ascii_uppercase[:3]:
         # Create a user for each letter
@@ -58,17 +54,17 @@ def seed_users():
             "role": UserRole.NGO,
             "status": UserStatus.ACTIVE,
         }
-            
+
         print(f"Adding NGO user {letter}...")
         try:
             NGO_user = user_repository.insert_one(user_data)
-            print(f"NGO user {letter} added with ID: {user.id}")
+            print(f"NGO user {letter} added with ID: {NGO_user.id}")
             session.commit()
         except Exception as e:
             print(f"Error adding NGO user {letter}: {e}")
             session.rollback()
 
-            for i in range(1, I):
+            for i in range(1, maxTeamLeads):
                 user_data = {
                     "userName": f"{letter}{i}",
                     "email": f"{letter}{i}@{letter}-NGO.com",
@@ -80,7 +76,9 @@ def seed_users():
                 try:
                     print(f"Adding Team Lead user {letter}{i}...")
                     team_lead_user = user_repository.insert_one(user_data)
-                    print(f"Team Lead user {letter}{i} added with ID: {team_lead_user.id}")
+                    print(
+                        f"Team Lead user {letter}{i} added with ID: {team_lead_user.id}"
+                    )
                     session.commit()
                 except Exception as e:
                     print(f"Error adding Team Lead user {letter}{i}: {e}")
@@ -98,14 +96,15 @@ def seed_users():
                     try:
                         print(f"Adding Operator user {letter}{i}{j}...")
                         operator_user = user_repository.insert_one(user_data)
-                        print(f"Operator user {letter}{i}{j} added with ID: {operator_user.id}")
+                        print(
+                            f"Operator user {letter}{i}{j} added with ID: {operator_user.id}"
+                        )
                         session.commit()
                     except Exception as e:
                         print(f"Error adding Operator user {letter}{i}{j}: {e}")
                         session.rollback()
 
-            I -= 1
-
+            maxTeamLeads -= 1
 
 
 if __name__ == "__main__":

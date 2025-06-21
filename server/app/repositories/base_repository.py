@@ -91,6 +91,18 @@ class BaseRepository:
         self.db.refresh(obj)
         return obj
 
+    def update_one_by_id(self, id: str, record) -> Any:
+        """Update a record by ID."""
+        obj = self.find_one_by_id(id)
+        if obj is None:
+            return None
+
+        for key, value in record.items():
+            setattr(obj, key, value)
+        self.db.commit()
+        self.db.refresh(obj)
+        return obj
+
     def upsert_one(self, record, **kwargs) -> Any:
         obj = self.find_one(**kwargs)
         if obj is None:

@@ -28,6 +28,15 @@ test:
 	- docker compose run --rm --entrypoint="pytest tests" server
 
 clean:
-	docker compose run --rm --entrypoint="python -c 'from app.utils.clean import clean; clean()'" server
+	@echo "Destroying model tables..."
+	- docker compose run --rm -e POSTGRESQL_HOST=db --entrypoint="python drop_tables.py" server
+	@echo "Database tables destroyed!"
 
-.PHONY: seed seed-sectors seed-users verify-sectors verify-users clear-sectors clear-users init-db test clean
+drop-tables:
+	@echo "Dropping model tables..."
+	- docker compose run --rm -e POSTGRESQL_HOST=db --entrypoint="python drop_tables.py" server
+
+reset-db: clean init-db
+	@echo "Database reset complete!"
+
+.PHONY: seed seed-sectors seed-users verify-sectors verify-users clear-sectors clear-users init-db test clean drop-tables reset-db

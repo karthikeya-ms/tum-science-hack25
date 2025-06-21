@@ -4,6 +4,8 @@ from fastapi import FastAPI
 from fastapi.responses import Response
 
 from app.routes.root import router as root_router
+from app.routes.sectors import router as sectors_router
+from app.routes.users import router as users_router
 from app.config import settings
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -34,3 +36,5 @@ def read_openapi_yaml() -> Response:
 
 
 app.include_router(root_router)
+app.include_router(sectors_router)
+app.include_router(users_router)

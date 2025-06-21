@@ -3,6 +3,7 @@ from sqlalchemy.orm import sessionmaker
 from app.database import engine
 from app.models import User
 
+
 def verify_users():
     """
     Print all users in the database.
@@ -31,6 +32,7 @@ def verify_users():
         session.close()
         print("----------------------------")
 
+
 def clear_users():
     """
     Delete all users from the database.
@@ -53,8 +55,10 @@ def clear_users():
         session.close()
         print("-----------------------------")
 
+
 if __name__ == "__main__":
     import sys
+
     if len(sys.argv) > 1 and sys.argv[1] == "clear":
         clear_users()
     else:
