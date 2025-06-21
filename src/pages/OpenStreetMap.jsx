@@ -111,7 +111,8 @@ export default function OpenStreetMap() {
   };
 
   return (
-    <div style={{ height: "600px", width: "100%" }}>
+    <div className="w-full h-96 rounded-lg overflow-hidden border border-gray-600">
+      
       <MapContainer 
         center={center} 
         zoom={8} 

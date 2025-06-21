@@ -1,4 +1,6 @@
 import React from "react";
+
+//import SimpleMap from "./SimpleMap";
 import OpenStreetMap from "./OpenStreetMap";
 
 export default function OperatorHome() {
@@ -22,7 +24,7 @@ export default function OperatorHome() {
             <div className="text-xl font-semibold text-yellow-300">Moderate</div>
           </div>
         </div>
-        <div className="w-full h-64 bg-gray-800 rounded-lg flex items-center justify-center text-gray-500">
+        <div className="w-full h-96 bg-gray-800 rounded-lg flex items-center justify-center text-gray-500">
           <OpenStreetMap />
         </div>
       </section>
