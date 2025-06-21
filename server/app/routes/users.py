@@ -38,6 +38,20 @@ def get_user_by_id(user_id: UUID) -> UserResponse:
     except Exception as e:
         print(f"Error in get_user_by_id: {e}")
         raise InternalServerErrorException(f"Failed to retrieve user: {str(e)}")
+    
+@router.get("/username/{username}", response_model=List[UserResponse])
+def get_user_by_username(username: str) -> List[UserResponse]:
+    """Get users by username."""
+    try:
+        repo = UsersRepository()
+        users = repo.get_user_by_username(username)
+        if not users:
+            raise ResourceNotFoundException("User not found")
+        return users
+    except Exception as e: 
+        raise InternalServerErrorException(
+            f"Failed to retrieve users by username: {str(e)}"
+        )
 
 
 @router.get("/role/{role}", response_model=List[UserResponse])

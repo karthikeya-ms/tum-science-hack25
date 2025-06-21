@@ -79,6 +79,10 @@ class Sector(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now(), nullable=True)
     # --- Assignment Columns ---
     # An NGO user assigned to this sector
+    assigned_NGO = Column(
+        String(36), nullable=True,
+    )
+
     assigned_to_ngo_id = Column(
         String(36),
         ForeignKey("users.id"),  # Ensure this FK targets a user with role 'NGO'

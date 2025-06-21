@@ -2,11 +2,15 @@ import os
 import geopandas as gpd
 import numpy as np
 import random
+
+from app.repositories.users_repository import UsersRepository
 from shapely.geometry import Point, box
 from shapely.ops import unary_union
 # import matplotlib.pyplot as plt
 from rtree import index as rtree_index
 from collections import deque
+
+users_repository = UsersRepository()
 
 # === Step 1: Load Ukraine boundary ===
 ukraine_path = os.path.join("app","files", "ua.json")  # path to your Ukraine GeoJSON
@@ -57,6 +61,7 @@ gdf = mine_risk_gdf.copy()
 
 # === Partner definitions ===
 partners = {'A': 10000, 'B': 7000, 'C': 3000}
+# partner_ids = 
 total_share = sum(partners.values())
 partners = {k: v / total_share for k, v in partners.items()}
 total_risk = gdf['risk'].sum()

@@ -6,7 +6,7 @@ from app.database import engine
 from app.models import Sector
 from app.enums import SectorStatus
 from app.services.sector_services import calculate_area_sqm, coordinates_to_wkt
-from app.repositories.users_repository import UsersRepository
+# from app.repositories.users_repository import UsersRepository
 
 
 def seed_sectors():
@@ -18,7 +18,6 @@ def seed_sectors():
     # Create a session
     Session = sessionmaker(bind=engine)
     session = Session()
-    users_repository = UsersRepository()
 
     try:
         # Path to the sectors.json file
@@ -42,7 +41,7 @@ def seed_sectors():
         print(f"Total features in file: {len(features)}")
 
         # Take only the first 5 features
-        features_to_seed = features[:5]
+        features_to_seed = features[:]
         print(f"Seeding first {len(features_to_seed)} features...")
 
         # Clear existing sectors (optional - remove if you want to keep existing data)
@@ -54,13 +53,8 @@ def seed_sectors():
         for i, feature in enumerate(features_to_seed, 1):
             try:
                 properties = feature.get("properties", {})
-                NGO = properties.get("NGO")
+                NGO = properties.get("partner")
 
-                if NGO is not None:
-                    NGO =  users_repository.get_user_by_username(NGO)
-                    NGO_ID = NGO.id if NGO else None
-                else:
-                    NGO_ID = None
 
                 geometry = feature.get("geometry", {})
 
@@ -96,13 +90,13 @@ def seed_sectors():
                     risk_probability=risk,
                     total_mines_found=0,  # Default value
                     status=sector_status,  # Default status
-                    assigned_to_ngo_id=NGO_ID,  # NGO field
+                    assigned_NGO= NGO,  # NGO field
                     # Assignment fields are left as None (nullable)
                 )
 
                 session.add(sector)
                 print(
-                    f"Added sector {i}: Risk={risk}, Status={sector_status} Area={area_sqm:.2f} sqm"
+                    f"Added sector {i}: Risk={risk}, Status={sector_status}, NGO={NGO}, Area={area_sqm:.2f} sqm"
                 )
 
             except Exception as e:

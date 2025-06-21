@@ -86,6 +86,18 @@ class UsersRepository(BaseRepository):
         :return: List of NGO users
         """
         return self.get_users_by_role(UserRole.NGO)
+    
+    def get_user_by_username(self, username: str) -> List[Optional[UserResponse]]:
+        """
+        Retrieves a user by their username and returns a UserResponse DTO.
+
+        :param username: The username of the user to retrieve.
+        :return: A UserResponse DTO containing the user's details or None if not found.
+        """
+        user = self.find_many(userName=username)
+        if not user:
+            return None
+        return self._users_to_response_list(user)
 
     def get_team_leads(self, ngo_id: Optional[UUID] = None) -> List[UserResponse]:
         """
