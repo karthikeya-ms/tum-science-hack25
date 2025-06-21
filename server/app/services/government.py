@@ -3,14 +3,11 @@ import geopandas as gpd
 import numpy as np
 import random
 
-from app.repositories.users_repository import UsersRepository
 from shapely.geometry import Point, box
 from shapely.ops import unary_union
-# import matplotlib.pyplot as plt
 from rtree import index as rtree_index
 from collections import deque
 
-users_repository = UsersRepository()
 
 # === Step 1: Load Ukraine boundary ===
 ukraine_path = os.path.join("app","files", "ua.json")  # path to your Ukraine GeoJSON
@@ -213,7 +210,7 @@ for partner, leaders in team_leaders.items():
     gdf.loc[gdf.partner == partner, 'leader'] = gdf[gdf.partner == partner].index.map(id_to_leader).fillna("Unassigned")
 
 # === Export or visualize ===
-output_path = os.path.join("app", "files", "sectors.json")
+output_path = os.path.join( "files", "sectors.json")
 gdf.to_file(output_path, driver='GeoJSON')
 # gdf.to_file("kharkiv_mine_risk_leader_partitioned.json", driver='GeoJSON')
 

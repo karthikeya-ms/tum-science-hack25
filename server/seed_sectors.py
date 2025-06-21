@@ -54,6 +54,7 @@ def seed_sectors():
             try:
                 properties = feature.get("properties", {})
                 NGO = properties.get("partner")
+                team_leader = properties.get("leader")
 
 
                 geometry = feature.get("geometry", {})
@@ -91,12 +92,13 @@ def seed_sectors():
                     total_mines_found=0,  # Default value
                     status=sector_status,  # Default status
                     assigned_NGO= NGO,  # NGO field
+                    assigned_team_leader=team_leader,  # Team leader field
                     # Assignment fields are left as None (nullable)
                 )
 
                 session.add(sector)
                 print(
-                    f"Added sector {i}: Risk={risk}, Status={sector_status}, NGO={NGO}, Area={area_sqm:.2f} sqm"
+                    f"Added sector {i}: Risk={risk}, Status={sector_status}, NGO={NGO}, Team_Leader={team_leader} Area={area_sqm:.2f} sqm"
                 )
 
             except Exception as e:

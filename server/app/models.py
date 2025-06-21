@@ -83,9 +83,13 @@ class Sector(Base):
         String(36), nullable=True,
     )
 
+    assigned_team_leader = Column(
+        String(36), nullable=True,
+    )
+
     assigned_to_ngo_id = Column(
         String(36),
-        ForeignKey("users.id"),  # Ensure this FK targets a user with role 'NGO'
+        ForeignKey("users.id"),  
         nullable=True,
     )
     assigned_ngo = relationship(
