@@ -1,6 +1,22 @@
 FROM ghcr.io/astral-sh/uv:python3.12-alpine AS development
+RUN apk add --no-cache \
+    gdal-dev \
+    geos-dev \
+    proj-dev \
+    proj-util \
+    proj-data \
+    musl-dev \
+    gcc \
+    g++ \
+    make \
+    curl \
+    postgresql-dev
+
 WORKDIR /app
 
+# Set environment variables for GDAL
+ENV GDAL_CONFIG=/usr/bin/gdal-config
+ENV GEOS_CONFIG=/usr/bin/geos-config
 RUN apk update && apk add build-base
 
 COPY ./docs/requirements.txt ./requirements.txt
