@@ -134,7 +134,7 @@ export default function CivilianEmergency({ onBack }) {
       <div className="relative z-10 max-w-6xl mx-auto space-y-8 text-white p-6">
         <header className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white">🚨 Emergency Report</h1>
+            <h1 className="text-3xl font-bold text-white"> Emergency Report</h1>
             <p className="text-teal-300">
               Report suspicious objects or potential unexploded ordnance
             </p>

@@ -35,7 +35,8 @@ export default function OpenStreetMap({
   riskData = null, // New prop for risk-based data overlay
   getRiskBasedStyle = null, // New prop for risk-based styling function
   onEachRiskFeature = null, // New prop for risk feature popup handler
-  riskLoading = false // New prop for risk data loading state
+  riskLoading = false, // New prop for risk data loading state
+  zoom = 8 // New prop for initial zoom level, defaults to 8
 }) {
   const center = [49.76, 36.21];
   const mapRef = useRef();
@@ -454,7 +455,7 @@ export default function OpenStreetMap({
       <MapContainer 
         key={mapKey}
         center={center} 
-        zoom={8} 
+        zoom={zoom} 
         scrollWheelZoom={true}
         style={{ height: "100%", width: "100%" }}
         ref={handleMapCreated}

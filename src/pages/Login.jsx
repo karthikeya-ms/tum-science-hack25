@@ -93,7 +93,7 @@ export default function Login({ onLogin, onEmergency }) {
         onClick={onEmergency}
         className="fixed top-6 right-6 z-30 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-3 rounded-lg font-semibold shadow-xl transition-all duration-300 transform hover:scale-105 flex items-center space-x-2"
       >
-        <span className="text-xl">🚨</span>
+        <span className="text-xl"></span>
         <span>Report Emergency</span>
       </button>
 
@@ -118,10 +118,30 @@ export default function Login({ onLogin, onEmergency }) {
           </div>
           
           {/* Decorative Elements */}
-          <div className="flex justify-center space-x-8 mt-12">
-            <div className="w-16 h-16 bg-gradient-to-br from-teal-400 to-green-400 rounded-full opacity-20 animate-pulse"></div>
-            <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-teal-400 rounded-full opacity-30 animate-pulse delay-1000"></div>
-            <div className="w-20 h-20 bg-gradient-to-br from-teal-300 to-green-300 rounded-full opacity-15 animate-pulse delay-2000"></div>
+          <div className="flex justify-center items-center mt-12">
+            {/* Horizontal Logo - Zig Zag Pattern */}
+            <div className="flex items-center space-x-8 px-10 py-8 bg-gradient-to-r from-teal-500/10 to-green-500/10 rounded-3xl border border-teal-400/20 backdrop-blur-sm">
+              {/* Signal/Communication Icon - Higher */}
+              <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-green-400 rounded-full flex items-center justify-center transform -translate-y-3">
+                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                </svg>
+              </div>
+              
+              {/* Connect/Link Icon - Lower */}
+              <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-teal-400 rounded-full flex items-center justify-center transform translate-y-3">
+                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                </svg>
+              </div>
+              
+              {/* Shield/Protection Icon - Higher */}
+              <div className="w-12 h-12 bg-gradient-to-br from-teal-400 to-green-400 rounded-full flex items-center justify-center transform -translate-y-3">
+                <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+            </div>
           </div>
           
           {/* Mission Statement */}
@@ -213,9 +233,9 @@ export default function Login({ onLogin, onEmergency }) {
                   onChange={(e) => setPartner(e.target.value)}
                   className="w-full bg-[#27323e] border border-teal-500/20 text-white py-3 px-4 rounded-xl focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 transition-all"
                 >
-                  <option value="A">Partner A - Western Sector</option>
-                  <option value="B">Partner B - Central Sector</option>
-                  <option value="C">Partner C - Eastern Sector</option>
+                  <option value="A">Partner A - Central Sector</option>
+                  <option value="B">Partner B - Eastern Sector</option>
+                  <option value="C">Partner C - Western Sector</option>
                 </select>
               )}
 

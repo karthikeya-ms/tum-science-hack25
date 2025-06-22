@@ -216,10 +216,10 @@ export default function NgoHome({ partner }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10">
               <h3 className="font-semibold text-lg mb-2 text-white">Your Assignment</h3>
-              <p className="text-gray-300">
-                {partner === 'A' && "You are responsible for the western sector of the Kharkiv region. Focus on agricultural areas and rural settlements."}
-                {partner === 'B' && "You are responsible for the central sector of the Kharkiv region. Focus on urban areas and transportation corridors."}
-                {partner === 'C' && "You are responsible for the eastern sector of the Kharkiv region. Focus on industrial areas and border regions."}
+              <p className="text-gray-300 mb-6">
+                {partner === 'A' && "You are responsible for the central sector of the Kharkiv region. Focus on urban areas and transportation corridors."}
+                {partner === 'B' && "You are responsible for the eastern sector of the Kharkiv region. Focus on industrial areas and border regions."}
+                {partner === 'C' && "You are responsible for the western sector of the Kharkiv region. Focus on agricultural areas and rural settlements."}
               </p>
             </div>
             
