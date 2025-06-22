@@ -236,22 +236,22 @@ export default function TeamLeadHome() {
   const getPartnerInfo = () => {
     const partnerData = {
       A: {
-        region: "Western Kharkiv",
-        focus: "Agricultural areas and rural settlements",
-        riskLevel: "Moderate",
-        priority: "Clear agricultural land for farming resumption"
-      },
-      B: {
-        region: "Central Kharkiv", 
+        region: "Central Kharkiv",
         focus: "Urban areas and transportation corridors",
         riskLevel: "High",
         priority: "Critical infrastructure and civilian safety"
       },
-      C: {
+      B: {
         region: "Eastern Kharkiv",
         focus: "Industrial areas and border regions", 
         riskLevel: "Variable to High",
         priority: "Border security and industrial sites"
+      },
+      C: {
+        region: "Western Kharkiv",
+        focus: "Agricultural areas and rural settlements",
+        riskLevel: "Moderate",
+        priority: "Clear agricultural land for farming resumption"
       }
     };
     return partnerData[partner] || partnerData.A;

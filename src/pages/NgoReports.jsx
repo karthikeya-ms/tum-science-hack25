@@ -94,7 +94,7 @@ export default function NgoReports() {
     <div className="max-w-5xl mx-auto p-4 space-y-6">
       <header>
         <h1 className="text-3xl font-bold text-white">NGO Reports</h1>
-        <p className="text-gray-400">Automatically loaded Excel data from assets folder</p>
+        <p className="text-gray-400">Monthly statistics of demining operations</p>
       </header>
 
       {tableData.length > 0 && (

@@ -26,7 +26,7 @@ export const TeamLeadProvider = ({ children, partner }) => {
   // Operator assignments state
   const [assignments, setAssignments] = useState([
     { 
-      member: "Alice",  
+      member: "Alpha",  
       sectors: [allSectors[0], allSectors[1], allSectors[2], allSectors[3]], 
       progress: 40,
       mines: 5,
@@ -34,7 +34,7 @@ export const TeamLeadProvider = ({ children, partner }) => {
       status: 'Working on assigned sectors'
     },
     { 
-      member: "Bob",    
+      member: "Bravo",    
       sectors: [], 
       progress: 0,
       mines: 0,
@@ -42,7 +42,7 @@ export const TeamLeadProvider = ({ children, partner }) => {
       status: 'Idle — waiting assignment'
     },
     { 
-      member: "Carlos", 
+      member: "Charlie", 
       sectors: [], 
       progress: 0,
       mines: 0,
