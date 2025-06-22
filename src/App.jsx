@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Login from "./pages/Login";
+import CivilianEmergency from "./pages/CivilianEmergency";
 import { TeamLeadProvider } from "./contexts/TeamLeadContext";
 
 // Operator pages
@@ -27,11 +28,17 @@ import GovDownload from "./pages/GovDownload";
 export default function App() {
   // user = { role: "operator"|"teamLead"|"ngo"|"gov", username: string, partner?: "A"|"B"|"C" }
   const [user, setUser] = useState(null);
-  const [tab, setTab]   = useState("overview");
+  const [tab, setTab] = useState("overview");
+  const [showEmergency, setShowEmergency] = useState(false);
+
+  // Show emergency reporting page
+  if (showEmergency) {
+    return <CivilianEmergency onBack={() => setShowEmergency(false)} />;
+  }
 
   // Show login form until authenticated
   if (!user) {
-    return <Login onLogin={setUser} />;
+    return <Login onLogin={setUser} onEmergency={() => setShowEmergency(true)} />;
   }
 
   // Build tab lists per role

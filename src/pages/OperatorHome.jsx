@@ -394,31 +394,6 @@ function OperatorMap() {
             </LayersControl.Overlay>
           )}
         </LayersControl>
-        
-        <Marker position={center}>
-          <Popup>
-            <div>
-              <h4>Team Leader {assignedLeader} - Focus Area</h4>
-              {loading && <p>Loading focus area data...</p>}
-              {error && <p style={{color: 'red'}}>Error: {error}</p>}
-              {stats && (
-                <div>
-                  <p><strong>Focus Cells:</strong> {stats.totalAreas}/4</p>
-                  <p><strong>Average Risk:</strong> {(stats.avgRisk * 100).toFixed(1)}%</p>
-                  <p><strong>Risk Range:</strong> {(stats.minRisk * 100).toFixed(1)}% - {(stats.maxRisk * 100).toFixed(1)}%</p>
-                  <div style={{ marginTop: '10px', fontSize: '12px' }}>
-                    <div style={{color: '#008000'}}>🟢 Low Risk: {stats.lowRisk} cells</div>
-                    <div style={{color: '#FFA500'}}>🟡 Medium Risk: {stats.mediumRisk} cells</div>
-                    <div style={{color: '#FF0000'}}>🔴 High Risk: {stats.highRisk} cells</div>
-                  </div>
-                </div>
-              )}
-              <div style={{ marginTop: '10px', fontSize: '11px', fontStyle: 'italic' }}>
-                Focused 2x2 grid from Team Leader {assignedLeader}'s area
-              </div>
-            </div>
-          </Popup>
-        </Marker>
       </MapContainer>
       
       {loading && (
@@ -484,91 +459,125 @@ function OperatorMap() {
 
 export default function OperatorHome() {
   return (
-    <div className="max-w-4xl mx-auto space-y-8 text-white">
-      {/* Header */}
-      <header>
-        <h1 className="text-3xl font-bold">Operator Overview</h1>
-        <p className="text-gray-400">General operational area and coordination hub</p>
-      </header>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Animated Grid Background */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: "linear-gradient(160deg, #0f1f2e 20%, #1e364e 100%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 animate-pulse"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(64,224,208,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(64,224,208,0.12) 1px, transparent 1px)",
+          backgroundSize: "30px 30px",
+          animation: "gridPulse 4s ease-in-out infinite alternate",
+        }}
+      />
+      
+      {/* Add custom keyframes for grid animation */}
+      <style jsx>{`
+        @keyframes gridPulse {
+          0% {
+            opacity: 0.6;
+            transform: scale(1);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1.02);
+          }
+        }
+      `}</style>
 
-      {/* Map Section */}
-      <section className="bg-gray-700 p-6 rounded-lg shadow-md">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-          <div>
-            <div className="text-sm text-gray-400">Operational Region</div>
-            <div className="text-xl font-semibold">Kharkiv Region</div>
-          </div>
-          <div>
-            <div className="text-sm text-gray-400">Mission Status</div>
-            <div className="text-xl font-semibold text-green-400">Active</div>
-          </div>
-          <div>
-            <div className="text-sm text-gray-400">Coordination Level</div>
-            <div className="text-xl font-semibold text-blue-400">Multi-Partner</div>
-          </div>
-        </div>
-        <OperatorMap />
-      </section>
+      {/* Content */}
+      <div className="relative z-10 max-w-4xl mx-auto space-y-8 text-white p-6">
+        {/* Header */}
+        <header>
+          <h1 className="text-3xl font-bold text-white">Operator Overview</h1>
+          <p className="text-teal-300">General operational area and coordination hub</p>
+        </header>
 
-      {/* Operational Control Center */}
-      <section className="bg-gray-700 p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Control Center</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-gray-800 p-4 rounded">
-            <h3 className="font-semibold text-lg mb-2">Mission Coordination</h3>
-            <p className="text-gray-300">
-              Central oversight of all demining operations across the region. 
-              Monitoring progress and ensuring safety protocols.
-            </p>
-          </div>
-          
-          <div className="bg-gray-800 p-4 rounded">
-            <h3 className="font-semibold text-lg mb-2">Resource Management</h3>
-            <p className="text-gray-300">
-              Equipment allocation, personnel deployment, and logistics 
-              coordination for optimal operational efficiency.
-            </p>
-          </div>
-          
-          <div className="bg-gray-800 p-4 rounded">
-            <h3 className="font-semibold text-lg mb-2">Safety Oversight</h3>
-            <div className="flex items-center space-x-2 mb-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <span className="text-green-400">All Clear</span>
+        {/* Map Section */}
+        <section className="bg-[#1f2a36] bg-opacity-90 p-6 rounded-2xl shadow-xl border border-teal-500/20">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+            <div>
+              <div className="text-sm text-teal-300">Operational Region</div>
+              <div className="text-xl font-semibold text-white">Kharkiv Region</div>
             </div>
-            <p className="text-gray-300 text-sm">
-              Continuous monitoring of safety protocols and emergency response readiness.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Communication Hub */}
-      <section className="bg-gray-700 p-6 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold mb-4">Communication Hub</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-gray-800 p-4 rounded">
-            <h3 className="font-semibold text-lg mb-2">Active Channels</h3>
-            <ul className="text-gray-300 space-y-1">
-              <li>• Command & Control Center</li>
-              <li>• Field Operations Teams</li>
-              <li>• Emergency Response Units</li>
-              <li>• International Coordination</li>
-              <li>• Local Government Liaison</li>
-            </ul>
-          </div>
-          
-          <div className="bg-gray-800 p-4 rounded">
-            <h3 className="font-semibold text-lg mb-2">Emergency Protocols</h3>
-            <div className="text-gray-300 space-y-1">
-              <div>Emergency Hotline: +380-XX-XXX-XXXX</div>
-              <div>Medical Emergency: +380-XX-XXX-XXXX</div>
-              <div>Evacuation Command: +380-XX-XXX-XXXX</div>
-              <div>International Support: +380-XX-XXX-XXXX</div>
+            <div>
+              <div className="text-sm text-teal-300">Mission Status</div>
+              <div className="text-xl font-semibold text-teal-400">Active</div>
+            </div>
+            <div>
+              <div className="text-sm text-teal-300">Coordination Level</div>
+              <div className="text-xl font-semibold text-green-400">Multi-Partner</div>
             </div>
           </div>
-        </div>
-      </section>
+          <OperatorMap />
+        </section>
+
+        {/* Operational Control Center */}
+        <section className="bg-[#1f2a36] bg-opacity-90 p-6 rounded-2xl shadow-xl border border-teal-500/20">
+          <h2 className="text-xl font-semibold mb-4 text-white">Control Center</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10">
+              <h3 className="font-semibold text-lg mb-2 text-white">Mission Coordination</h3>
+              <p className="text-gray-300">
+                Central oversight of all demining operations across the region. 
+                Monitoring progress and ensuring safety protocols.
+              </p>
+            </div>
+            
+            <div className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10">
+              <h3 className="font-semibold text-lg mb-2 text-white">Resource Management</h3>
+              <p className="text-gray-300">
+                Equipment allocation, personnel deployment, and logistics 
+                coordination for optimal operational efficiency.
+              </p>
+            </div>
+            
+            <div className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10">
+              <h3 className="font-semibold text-lg mb-2 text-white">Safety Oversight</h3>
+              <div className="flex items-center space-x-2 mb-2">
+                <div className="w-3 h-3 bg-teal-400 rounded-full"></div>
+                <span className="text-teal-400">All Clear</span>
+              </div>
+              <p className="text-gray-300 text-sm">
+                Continuous monitoring of safety protocols and emergency response readiness.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Communication Hub */}
+        <section className="bg-[#1f2a36] bg-opacity-90 p-6 rounded-2xl shadow-xl border border-teal-500/20">
+          <h2 className="text-xl font-semibold mb-4 text-white">Communication Hub</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10">
+              <h3 className="font-semibold text-lg mb-2 text-white">Active Channels</h3>
+              <ul className="text-gray-300 space-y-1">
+                <li>• Command & Control Center</li>
+                <li>• Field Operations Teams</li>
+                <li>• Emergency Response Units</li>
+                <li>• International Coordination</li>
+                <li>• Local Government Liaison</li>
+              </ul>
+            </div>
+            
+            <div className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10">
+              <h3 className="font-semibold text-lg mb-2 text-white">Emergency Protocols</h3>
+              <div className="text-gray-300 space-y-1">
+                <div>Emergency Hotline: +380-XX-XXX-XXXX</div>
+                <div>Medical Emergency: +380-XX-XXX-XXXX</div>
+                <div>Evacuation Command: +380-XX-XXX-XXXX</div>
+                <div>International Support: +380-XX-XXX-XXXX</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
     </div>
   );
 }

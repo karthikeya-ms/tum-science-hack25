@@ -260,125 +260,159 @@ export default function TeamLeadHome() {
   const partnerInfo = getPartnerInfo();
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 text-white">
-      <header>
-        <h1 className="text-3xl font-bold">Team Leader Overview</h1>
-        <p className="text-gray-400">
-          Managing Partner {partner} operations in {partnerInfo.region}
-        </p>
-      </header>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Animated Grid Background */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: "linear-gradient(160deg, #0f1f2e 20%, #1e364e 100%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 animate-pulse"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(64,224,208,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(64,224,208,0.12) 1px, transparent 1px)",
+          backgroundSize: "30px 30px",
+          animation: "gridPulse 4s ease-in-out infinite alternate",
+        }}
+      />
+      
+      {/* Add custom keyframes for grid animation */}
+      <style jsx>{`
+        @keyframes gridPulse {
+          0% {
+            opacity: 0.6;
+            transform: scale(1);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1.02);
+          }
+        }
+      `}</style>
 
-      {/* Partner Assignment Info */}
-      <div className="bg-gray-700 p-6 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4">Partner {partner} Assignment</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-gray-800 p-4 rounded">
-            <h3 className="font-semibold text-lg mb-2">Operational Region</h3>
-            <p className="text-gray-300">{partnerInfo.region}</p>
-          </div>
-          <div className="bg-gray-800 p-4 rounded">
-            <h3 className="font-semibold text-lg mb-2">Focus Areas</h3>
-            <p className="text-gray-300">{partnerInfo.focus}</p>
-          </div>
-          <div className="bg-gray-800 p-4 rounded">
-            <h3 className="font-semibold text-lg mb-2">Risk Level</h3>
-            <p className="text-gray-300">{partnerInfo.riskLevel}</p>
-          </div>
-          <div className="bg-gray-800 p-4 rounded">
-            <h3 className="font-semibold text-lg mb-2">Priority Mission</h3>
-            <p className="text-gray-300">{partnerInfo.priority}</p>
+      {/* Content */}
+      <div className="relative z-10 max-w-4xl mx-auto space-y-8 text-white p-6">
+        <header>
+          <h1 className="text-3xl font-bold text-white">Team Leader Overview</h1>
+          <p className="text-teal-300">
+            Managing Partner {partner} operations in {partnerInfo.region}
+          </p>
+        </header>
+
+        {/* Partner Assignment Info */}
+        <div className="bg-[#1f2a36] bg-opacity-90 p-6 rounded-2xl shadow-xl border border-teal-500/20">
+          <h2 className="text-xl font-semibold mb-4 text-white">Partner {partner} Assignment</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10">
+              <h3 className="font-semibold text-lg mb-2 text-white">Operational Region</h3>
+              <p className="text-gray-300">{partnerInfo.region}</p>
+            </div>
+            <div className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10">
+              <h3 className="font-semibold text-lg mb-2 text-white">Focus Areas</h3>
+              <p className="text-gray-300">{partnerInfo.focus}</p>
+            </div>
+            <div className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10">
+              <h3 className="font-semibold text-lg mb-2 text-white">Risk Level</h3>
+              <p className="text-gray-300">{partnerInfo.riskLevel}</p>
+            </div>
+            <div className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10">
+              <h3 className="font-semibold text-lg mb-2 text-white">Priority Mission</h3>
+              <p className="text-gray-300">{partnerInfo.priority}</p>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Team Status */}
-      <div className="bg-gray-700 p-6 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4">Team Status</h2>
-        <ul className="space-y-4">
-          {assignments.map((op, i) => (
-            <li
-              key={i}
-              className="bg-gray-800 p-4 rounded-lg flex justify-between items-center"
-            >
-              <div>
-                <div className="font-semibold text-lg">{op.member}</div>
-                <div className="text-gray-300 text-sm">
-                  {op.sectors.length > 0 
-                    ? `Working on ${op.sectors.length} sectors: ${op.sectors.slice(0, 3).join(", ")}${op.sectors.length > 3 ? "..." : ""}`
-                    : "Idle — waiting assignment"
-                  }
-                </div>
-                {op.sectors.length > 0 && (
-                  <div className="text-gray-400 text-xs mt-1">
-                    Progress: {op.progress}% • Mines found: {op.mines}
-                  </div>
-                )}
-              </div>
-              <button
-                onClick={() => setSelected(op)}
-                className="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded"
+        {/* Team Status */}
+        <div className="bg-[#1f2a36] bg-opacity-90 p-6 rounded-2xl shadow-xl border border-teal-500/20">
+          <h2 className="text-xl font-semibold mb-4 text-white">Team Status</h2>
+          <ul className="space-y-4">
+            {assignments.map((op, i) => (
+              <li
+                key={i}
+                className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10 flex justify-between items-center"
               >
-                Stats
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
+                <div>
+                  <div className="font-semibold text-lg text-white">{op.member}</div>
+                  <div className="text-gray-300 text-sm">
+                    {op.sectors.length > 0 
+                      ? `Working on ${op.sectors.length} sectors: ${op.sectors.slice(0, 3).join(", ")}${op.sectors.length > 3 ? "..." : ""}`
+                      : "Idle — waiting assignment"
+                    }
+                  </div>
+                  {op.sectors.length > 0 && (
+                    <div className="text-teal-300 text-xs mt-1">
+                      Progress: {op.progress}% • Mines found: {op.mines}
+                    </div>
+                  )}
+                </div>
+                <button
+                  onClick={() => setSelected(op)}
+                  className="bg-gradient-to-r from-teal-500 to-green-500 hover:from-teal-600 hover:to-green-600 text-white px-3 py-1 rounded-lg transition"
+                >
+                  Stats
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
 
-      {selected && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-gray-700 p-6 rounded-lg w-full max-w-md space-y-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-2xl font-semibold">{selected.member} Statistics</h2>
+        {selected && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+            <div className="bg-[#1f2a36] bg-opacity-95 p-6 rounded-2xl w-full max-w-md space-y-6 border border-teal-500/20">
+              <div className="flex justify-between items-center">
+                <h2 className="text-2xl font-semibold text-white">{selected.member} Statistics</h2>
+                <button
+                  onClick={() => setSelected(null)}
+                  className="text-teal-300 hover:text-white text-2xl leading-none"
+                >
+                  &times;
+                </button>
+              </div>
+
+              {/* Progress */}
+              <div>
+                <div className="text-sm text-teal-300">Progress</div>
+                <div className="w-full bg-[#27323e] h-3 rounded-full overflow-hidden mt-1">
+                  <div
+                    className="h-3 bg-gradient-to-r from-teal-400 to-green-400"
+                    style={{ width: `${selected.progress}%` }}
+                  />
+                </div>
+                <div className="text-right text-gray-300 text-sm mt-1">
+                  {selected.progress}%
+                </div>
+              </div>
+
+              {/* Mines Discovered */}
+              <div>
+                <div className="text-sm text-teal-300">Mines Discovered</div>
+                <div className="text-xl font-medium text-white">{selected.mines}</div>
+              </div>
+
+              {/* Live Location & Sectors */}
+              <div className="space-y-2">
+                <div className="text-sm text-teal-300">Live Location</div>
+                <TeamMemberLocationMap member={selected.member} />
+                <div className="text-sm text-teal-300">Assigned Sectors</div>
+                <div className="text-gray-200">
+                  {selected.sectors.length > 0
+                    ? selected.sectors.join(', ')
+                    : 'None'}
+                </div>
+              </div>
+
               <button
                 onClick={() => setSelected(null)}
-                className="text-gray-400 hover:text-white text-2xl leading-none"
+                className="mt-4 w-full bg-gradient-to-r from-teal-500 to-green-500 hover:from-teal-600 hover:to-green-600 text-white py-2 rounded-lg transition"
               >
-                &times;
+                Close
               </button>
             </div>
-
-            {/* Progress */}
-            <div>
-              <div className="text-sm text-gray-400">Progress</div>
-              <div className="w-full bg-gray-600 h-3 rounded-full overflow-hidden mt-1">
-                <div
-                  className="h-3 bg-green-400"
-                  style={{ width: `${selected.progress}%` }}
-                />
-              </div>
-              <div className="text-right text-gray-300 text-sm mt-1">
-                {selected.progress}%
-              </div>
-            </div>
-
-            {/* Mines Discovered */}
-            <div>
-              <div className="text-sm text-gray-400">Mines Discovered</div>
-              <div className="text-xl font-medium">{selected.mines}</div>
-            </div>
-
-            {/* Live Location & Sectors */}
-            <div className="space-y-2">
-              <div className="text-sm text-gray-400">Live Location</div>
-              <TeamMemberLocationMap member={selected.member} />
-              <div className="text-sm text-gray-400">Assigned Sectors</div>
-              <div className="text-gray-200">
-                {selected.sectors.length > 0
-                  ? selected.sectors.join(', ')
-                  : 'None'}
-              </div>
-            </div>
-
-            <button
-              onClick={() => setSelected(null)}
-              className="mt-4 w-full bg-blue-600 hover:bg-blue-500 text-white py-2 rounded"
-            >
-              Close
-            </button>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }

@@ -26,18 +26,6 @@ export default function SimpleMap() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        
-        <Marker position={center}>
-          <Popup>
-            <div className="text-center">
-              <h3 className="font-semibold text-gray-800">Kharkiv Region</h3>
-              <p className="text-sm text-gray-600">Humanitarian Demining Operations</p>
-              <p className="text-xs text-gray-500 mt-1">
-                Coordinates: {center[0]}, {center[1]}
-              </p>
-            </div>
-          </Popup>
-        </Marker>
       </MapContainer>
     </div>
   );

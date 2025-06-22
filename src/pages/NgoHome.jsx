@@ -84,7 +84,7 @@ export default function NgoHome({ partner }) {
     
     let fillColor, color;
     let opacity = 0;
-    let fillOpacity = 0.3;
+    let fillOpacity = 0.45;
     
     if (risk <= 0.3) {
       // Low risk - green shades with proportional intensity
@@ -145,81 +145,115 @@ export default function NgoHome({ partner }) {
   };
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 text-white">
-      {/* Header */}
-      <header className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">
-            Welcome, NGO Partner {partner}
-          </h1>
-          <p className="text-gray-400">
-            Here's your assigned operational region
-          </p>
-        </div>
-      </header>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Animated Grid Background */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: "linear-gradient(160deg, #0f1f2e 20%, #1e364e 100%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 animate-pulse"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(64,224,208,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(64,224,208,0.12) 1px, transparent 1px)",
+          backgroundSize: "30px 30px",
+          animation: "gridPulse 4s ease-in-out infinite alternate",
+        }}
+      />
+      
+      {/* Add custom keyframes for grid animation */}
+      <style jsx>{`
+        @keyframes gridPulse {
+          0% {
+            opacity: 0.6;
+            transform: scale(1);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1.02);
+          }
+        }
+      `}</style>
 
-      {/* Interactive Map Section */}
-      <section className="bg-gray-800 p-6 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4">
-          Partner {partner} Operational Area
-        </h2>
-        <div className="h-96">
-          <OpenStreetMap 
-            partners={[partner]} 
-            showLegend={false}
-            title={`Partner ${partner} Operations`}
-            filterLeadersByPartner={partner}
-            riskData={riskData}
-            getRiskBasedStyle={getRiskBasedStyle}
-            onEachRiskFeature={onEachRiskFeature}
-            riskLoading={riskLoading}
-          />
-        </div>
-      </section>
+      {/* Content */}
+      <div className="relative z-10 max-w-6xl mx-auto space-y-8 text-white p-6">
+        {/* Header */}
+        <header className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold text-white">
+              Welcome, NGO Partner {partner}
+            </h1>
+            <p className="text-teal-300">
+              Here's your assigned operational region
+            </p>
+          </div>
+        </header>
 
-      {/* Partner-specific information section */}
-      <section className="bg-gray-800 p-6 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4">Partner {partner} Information</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-gray-700 p-4 rounded">
-            <h3 className="font-semibold text-lg mb-2">Your Assignment</h3>
-            <p className="text-gray-300">
-              {partner === 'A' && "You are responsible for the western sector of the Kharkiv region. Focus on agricultural areas and rural settlements."}
-              {partner === 'B' && "You are responsible for the central sector of the Kharkiv region. Focus on urban areas and transportation corridors."}
-              {partner === 'C' && "You are responsible for the eastern sector of the Kharkiv region. Focus on industrial areas and border regions."}
-            </p>
+        {/* Interactive Map Section */}
+        <section className="bg-[#1f2a36] bg-opacity-90 p-6 rounded-2xl shadow-xl border border-teal-500/20">
+          <h2 className="text-xl font-semibold mb-4 text-white">
+            Partner {partner} Operational Area
+          </h2>
+          <div className="h-96">
+            <OpenStreetMap 
+              partners={[partner]} 
+              showLegend={false}
+              title={`Partner ${partner} Operations`}
+              filterLeadersByPartner={partner}
+              riskData={riskData}
+              getRiskBasedStyle={getRiskBasedStyle}
+              onEachRiskFeature={onEachRiskFeature}
+              riskLoading={riskLoading}
+            />
           </div>
-          
-          <div className="bg-gray-700 p-4 rounded">
-            <h3 className="font-semibold text-lg mb-2">Risk Profile</h3>
-            <p className="text-gray-300">
-              {partner === 'A' && "Moderate risk areas with scattered contamination. Priority: Clear agricultural land for farming resumption."}
-              {partner === 'B' && "High-density contamination in urban areas. Priority: Critical infrastructure and civilian safety."}
-              {partner === 'C' && "Variable risk with potential heavy contamination near former conflict zones. Priority: Border security and industrial sites."}
-            </p>
-          </div>
-          
-          <div className="bg-gray-700 p-4 rounded">
-            <h3 className="font-semibold text-lg mb-2">Team Leaders</h3>
-            <p className="text-gray-300">
-              {partner === 'A' && "Your team leaders A1, A2, and A3 are managing field operations across your assigned sectors."}
-              {partner === 'B' && "Your team leaders B1 and B2 are coordinating urban demining operations in critical areas."}
-              {partner === 'C' && "Your team leader C1 is overseeing border and industrial area clearance operations."}
-            </p>
-          </div>
-          
-          <div className="bg-gray-700 p-4 rounded">
-            <h3 className="font-semibold text-lg mb-2">Status</h3>
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <span className="text-green-400">Operational</span>
+        </section>
+
+        {/* Partner-specific information section */}
+        <section className="bg-[#1f2a36] bg-opacity-90 p-6 rounded-2xl shadow-xl border border-teal-500/20">
+          <h2 className="text-xl font-semibold mb-4 text-white">Partner {partner} Information</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10">
+              <h3 className="font-semibold text-lg mb-2 text-white">Your Assignment</h3>
+              <p className="text-gray-300">
+                {partner === 'A' && "You are responsible for the western sector of the Kharkiv region. Focus on agricultural areas and rural settlements."}
+                {partner === 'B' && "You are responsible for the central sector of the Kharkiv region. Focus on urban areas and transportation corridors."}
+                {partner === 'C' && "You are responsible for the eastern sector of the Kharkiv region. Focus on industrial areas and border regions."}
+              </p>
             </div>
-            <p className="text-gray-300 text-sm mt-1">
-              All systems active. Risk data updated in real-time.
-            </p>
+            
+            <div className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10">
+              <h3 className="font-semibold text-lg mb-2 text-white">Risk Profile</h3>
+              <p className="text-gray-300">
+                {partner === 'A' && "Moderate risk areas with scattered contamination. Priority: Clear agricultural land for farming resumption."}
+                {partner === 'B' && "High-density contamination in urban areas. Priority: Critical infrastructure and civilian safety."}
+                {partner === 'C' && "Variable risk with potential heavy contamination near former conflict zones. Priority: Border security and industrial sites."}
+              </p>
+            </div>
+            
+            <div className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10">
+              <h3 className="font-semibold text-lg mb-2 text-white">Team Leaders</h3>
+              <p className="text-gray-300">
+                {partner === 'A' && "Your team leaders A1, A2, and A3 are managing field operations across your assigned sectors."}
+                {partner === 'B' && "Your team leaders B1 and B2 are coordinating urban demining operations in critical areas."}
+                {partner === 'C' && "Your team leader C1 is overseeing border and industrial area clearance operations."}
+              </p>
+            </div>
+            
+            <div className="bg-[#27323e] p-4 rounded-xl border border-teal-500/10">
+              <h3 className="font-semibold text-lg mb-2 text-white">Status</h3>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-teal-400 rounded-full"></div>
+                <span className="text-teal-400">Operational</span>
+              </div>
+              <p className="text-gray-300 text-sm mt-1">
+                All systems active. Risk data updated in real-time.
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 }

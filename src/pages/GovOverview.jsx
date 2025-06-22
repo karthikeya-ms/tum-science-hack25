@@ -58,7 +58,7 @@ export default function GovOverview() {
     
     let fillColor, color;
     let opacity = 0; // No visible outlines
-    let fillOpacity = 0.4; // Slightly higher opacity for government overview
+    let fillOpacity = 0.5; // Increased opacity for better visibility
     
     if (risk <= 0.3) {
       // Low risk - green shades with proportional intensity
@@ -133,82 +133,116 @@ export default function GovOverview() {
   // };
 
   return (
-    <div className="min-h-screen bg-[#0E1324] p-6 space-y-8 text-[#E0E6ED]">
-      {/* Header */}
-      <header className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">National Overview</h1>
-          <p className="text-[#7A8FA6]">High-level metrics for decision makers</p>
-        </div>
-      </header>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Animated Grid Background */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: "linear-gradient(160deg, #0f1f2e 20%, #1e364e 100%)",
+        }}
+      />
+      <div
+        className="absolute inset-0 animate-pulse"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(64,224,208,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(64,224,208,0.12) 1px, transparent 1px)",
+          backgroundSize: "30px 30px",
+          animation: "gridPulse 4s ease-in-out infinite alternate",
+        }}
+      />
+      
+      {/* Add custom keyframes for grid animation */}
+      <style jsx>{`
+        @keyframes gridPulse {
+          0% {
+            opacity: 0.6;
+            transform: scale(1);
+          }
+          100% {
+            opacity: 1;
+            transform: scale(1.02);
+          }
+        }
+      `}</style>
 
-      {/* Neon-Gauge Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        {stats.map((s) => {
-          // for radial bars we need a 0–max scale; pick a sensible max
-          const domainMax = s.label === "Economic Value" ? 100 : s.value * 1.2;
-          const data = [{ name: s.label, value: s.value, fill: s.color }];
-          return (
-            <div
-              key={s.label}
-              className="bg-[#1B2330] p-4 rounded-2xl shadow-md flex flex-col items-center"
-            >
-              <ResponsiveContainer width="100%" height={150}>
-                <RadialBarChart
-                  cx="50%"
-                  cy="50%"
-                  innerRadius="60%"
-                  outerRadius="100%"
-                  barSize={12}
-                  data={data}
-                  startAngle={180}
-                  endAngle={0}
-                >
-                  <RadialBar
-                    background
-                    clockWise
-                    dataKey="value"
-                    cornerRadius={6}
-                    minAngle={15}
-                  />
-                  <Legend
-                    iconSize={0}
-                    layout="vertical"
-                    verticalAlign="middle"
-                    align="center"
-                    formatter={() => ""}
-                  />
-                  <Tooltip
-                    wrapperStyle={{ backgroundColor: "#16202A", border: "none" }}
-                    contentStyle={{ color: "#E0E6ED" }}
-                  />
-                </RadialBarChart>
-              </ResponsiveContainer>
-              <div className="text-center mt-2">
-                <div className="text-sm text-[#7A8FA6]">{s.label}</div>
-                <div className="text-2xl font-semibold">
-                  {s.value.toLocaleString()}
-                  {s.unit}
+      {/* Content */}
+      <div className="relative z-10 p-6 space-y-8 text-[#E0E6ED]">
+        {/* Header */}
+        <header className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-white">National Overview</h1>
+            <p className="text-teal-300">High-level metrics for decision makers</p>
+          </div>
+        </header>
+
+        {/* Neon-Gauge Stats */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {stats.map((s) => {
+            // for radial bars we need a 0–max scale; pick a sensible max
+            const domainMax = s.label === "Economic Value" ? 100 : s.value * 1.2;
+            const data = [{ name: s.label, value: s.value, fill: s.color }];
+            return (
+              <div
+                key={s.label}
+                className="bg-[#1f2a36] bg-opacity-90 p-4 rounded-2xl shadow-xl flex flex-col items-center border border-teal-500/20"
+              >
+                <ResponsiveContainer width="100%" height={150}>
+                  <RadialBarChart
+                    cx="50%"
+                    cy="50%"
+                    innerRadius="60%"
+                    outerRadius="100%"
+                    barSize={12}
+                    data={data}
+                    startAngle={180}
+                    endAngle={0}
+                  >
+                    <RadialBar
+                      background
+                      clockWise
+                      dataKey="value"
+                      cornerRadius={6}
+                      minAngle={15}
+                    />
+                    <Legend
+                      iconSize={0}
+                      layout="vertical"
+                      verticalAlign="middle"
+                      align="center"
+                      formatter={() => ""}
+                    />
+                    <Tooltip
+                      wrapperStyle={{ backgroundColor: "#1f2a36", border: "1px solid #14b8a6" }}
+                      contentStyle={{ color: "#E0E6ED" }}
+                    />
+                  </RadialBarChart>
+                </ResponsiveContainer>
+                <div className="text-center mt-2">
+                  <div className="text-sm text-teal-300">{s.label}</div>
+                  <div className="text-2xl font-semibold text-white">
+                    {s.value.toLocaleString()}
+                    {s.unit}
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
 
-      {/* Interactive OpenStreetMap with Risk Data */}
-      <section className="bg-gray-700 p-6 rounded-lg">
-        <h2 className="text-xl font-semibold mb-4">Operations Area - Kharkiv Region</h2>
-        <OpenStreetMap 
-          partners={['A', 'B', 'C']} // Show all partners for government overview
-          showLegend={true}
-          title="Government Overview - All Operations"
-          riskData={riskData}
-          getRiskBasedStyle={getRiskBasedStyle}
-          onEachRiskFeature={onEachRiskFeature}
-          riskLoading={riskLoading}
-        />
-      </section>
+        {/* Interactive OpenStreetMap with Risk Data */}
+        <section className="bg-[#1f2a36] bg-opacity-90 p-6 rounded-2xl shadow-xl border border-teal-500/20">
+          <h2 className="text-xl font-semibold mb-4 text-white">Operations Area - Kharkiv Region</h2>
+          <OpenStreetMap 
+            partners={['A', 'B', 'C']} // Show all partners for government overview
+            showLegend={true}
+            title="Government Overview - All Operations"
+            riskData={riskData}
+            getRiskBasedStyle={getRiskBasedStyle}
+            onEachRiskFeature={onEachRiskFeature}
+            riskLoading={riskLoading}
+          />
+        </section>
+      </div>
     </div>
   );
 }
