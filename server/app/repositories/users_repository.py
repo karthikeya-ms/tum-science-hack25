@@ -86,7 +86,7 @@ class UsersRepository(BaseRepository):
         :return: List of NGO users
         """
         return self.get_users_by_role(UserRole.NGO)
-    
+
     def get_user_by_username(self, username: str) -> List[Optional[UserResponse]]:
         """
         Retrieves a user by their username and returns a UserResponse DTO.

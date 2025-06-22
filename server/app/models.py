@@ -80,16 +80,18 @@ class Sector(Base):
     # --- Assignment Columns ---
     # An NGO user assigned to this sector
     assigned_NGO = Column(
-        String(36), nullable=True,
+        String(36),
+        nullable=True,
     )
 
     assigned_team_leader = Column(
-        String(36), nullable=True,
+        String(36),
+        nullable=True,
     )
 
     assigned_to_ngo_id = Column(
         String(36),
-        ForeignKey("users.id"),  
+        ForeignKey("users.id"),
         nullable=True,
     )
     assigned_ngo = relationship(

@@ -56,7 +56,6 @@ def seed_sectors():
                 NGO = properties.get("partner")
                 team_leader = properties.get("leader")
 
-
                 geometry = feature.get("geometry", {})
 
                 if geometry.get("type") != "Polygon":
@@ -91,7 +90,7 @@ def seed_sectors():
                     risk_probability=risk,
                     total_mines_found=0,  # Default value
                     status=sector_status,  # Default status
-                    assigned_NGO= NGO,  # NGO field
+                    assigned_NGO=NGO,  # NGO field
                     assigned_team_leader=team_leader,  # Team leader field
                     # Assignment fields are left as None (nullable)
                 )

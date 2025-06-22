@@ -10,7 +10,7 @@ from collections import deque
 
 
 # === Step 1: Load Ukraine boundary ===
-ukraine_path = os.path.join("app","files", "ua.json")  # path to your Ukraine GeoJSON
+ukraine_path = os.path.join("app", "files", "ua.json")  # path to your Ukraine GeoJSON
 ukraine = gpd.read_file(ukraine_path).to_crs("EPSG:4326")
 
 # === Step 2: Define Kharkiv region (100 km radius) ===
@@ -48,7 +48,7 @@ while x < maxx:
             risk = max(0, min(1, random.gauss(0.5, 0.2)))
         else:
             risk = 0
-        grid_cells.append({'geometry': cell, 'risk': risk})
+        grid_cells.append({"geometry": cell, "risk": risk})
         y += resolution
     x += resolution
 
@@ -57,20 +57,21 @@ mine_risk_gdf = gpd.overlay(mine_risk_gdf, ukraine, how="intersection")
 gdf = mine_risk_gdf.copy()
 
 # === Partner definitions ===
-partners = {'A': 10000, 'B': 7000, 'C': 3000}
-# partner_ids = 
+partners = {"A": 10000, "B": 7000, "C": 3000}
+# partner_ids =
 total_share = sum(partners.values())
 partners = {k: v / total_share for k, v in partners.items()}
-total_risk = gdf['risk'].sum()
+total_risk = gdf["risk"].sum()
 partner_targets = {p: total_risk * share for p, share in partners.items()}
 partner_allocated = {p: 0.0 for p in partners}
 
 # === Add spatial index ===
-gdf['id'] = gdf.index
-gdf['centroid'] = gdf.geometry.centroid
+gdf["id"] = gdf.index
+gdf["centroid"] = gdf.geometry.centroid
 geom_index = rtree_index.Index()
 for i, geom in enumerate(gdf.geometry):
     geom_index.insert(i, geom.bounds)
+
 
 # === Seed selector ===
 def pick_seed(gdf, existing_ids):
@@ -79,10 +80,21 @@ def pick_seed(gdf, existing_ids):
     used = gdf.loc[list(existing_ids)].centroid.to_numpy()
     all_coords = gdf.centroid.to_numpy()
     best_idx = max(
-        ((idx, min(np.linalg.norm(np.array(c.coords[0]) - np.array(u.coords[0])) for u in used))
-         for idx, c in enumerate(all_coords) if idx not in existing_ids),
-        key=lambda x: x[1])[0]
+        (
+            (
+                idx,
+                min(
+                    np.linalg.norm(np.array(c.coords[0]) - np.array(u.coords[0]))
+                    for u in used
+                ),
+            )
+            for idx, c in enumerate(all_coords)
+            if idx not in existing_ids
+        ),
+        key=lambda x: x[1],
+    )[0]
     return gdf.loc[best_idx]
+
 
 assigned = {}
 seeds = {}
@@ -90,12 +102,13 @@ frontiers = {}
 used_ids = set()
 for partner in partners:
     seed = pick_seed(gdf, used_ids)
-    seed_id = seed['id']
+    seed_id = seed["id"]
     seeds[partner] = seed_id
     frontiers[partner] = deque([seed_id])
     assigned[seed_id] = partner
-    partner_allocated[partner] += gdf.loc[seed_id, 'risk']
+    partner_allocated[partner] += gdf.loc[seed_id, "risk"]
     used_ids.add(seed_id)
+
 
 # === Neighbor finder ===
 def get_neighbors(cell_id):
@@ -109,6 +122,7 @@ def get_neighbors(cell_id):
         if geom.touches(gdf.loc[idx].geometry):
             neighbors.append(idx)
     return neighbors
+
 
 # === Partner flood-fill allocation ===
 active = set(partners.keys())
@@ -124,23 +138,24 @@ while active:
             if nbr in assigned:
                 continue
             assigned[nbr] = partner
-            partner_allocated[partner] += gdf.loc[nbr, 'risk']
+            partner_allocated[partner] += gdf.loc[nbr, "risk"]
             frontier.append(nbr)
             if partner_allocated[partner] >= partner_targets[partner]:
                 active.remove(partner)
                 break
 
-gdf['partner'] = gdf['id'].map(assigned).fillna("Unassigned")
-gdf = gdf.drop(columns=['centroid', 'id'])
+gdf["partner"] = gdf["id"].map(assigned).fillna("Unassigned")
+gdf = gdf.drop(columns=["centroid", "id"])
 
 # === Leader definitions ===
 team_leaders = {
-    'A': ['A1', 'A2', 'A3'],
-    'B': ['B1', 'B2'],
-    'C': ['C1'],
+    "A": ["A1", "A2", "A3"],
+    "B": ["B1", "B2"],
+    "C": ["C1"],
 }
 
-gdf['leader'] = "Unassigned"
+gdf["leader"] = "Unassigned"
+
 
 # === Helper to pick well-separated seeds ===
 def pick_multiple_seeds(local_gdf, num_seeds):
@@ -153,18 +168,22 @@ def pick_multiple_seeds(local_gdf, num_seeds):
     chosen.append(first)
     remaining.remove(first)
     while len(chosen) < num_seeds and remaining:
-        dists = [(min(np.linalg.norm(centroids[i] - centroids[c]) for c in chosen), i) for i in remaining]
+        dists = [
+            (min(np.linalg.norm(centroids[i] - centroids[c]) for c in chosen), i)
+            for i in remaining
+        ]
         dists.sort(reverse=True)
         chosen.append(dists[0][1])
         remaining.remove(dists[0][1])
     return local_gdf.iloc[chosen].index.tolist()
 
+
 # === Subdivide each partner into contiguous leader zones ===
 for partner, leaders in team_leaders.items():
     sub_gdf = gdf[gdf.partner == partner].copy()
-    sub_gdf['orig_id'] = sub_gdf.index
+    sub_gdf["orig_id"] = sub_gdf.index
     sub_gdf = sub_gdf.reset_index(drop=True)
-    sub_gdf['sub_id'] = sub_gdf.index
+    sub_gdf["sub_id"] = sub_gdf.index
     target_cells = len(sub_gdf) // len(leaders)
 
     geom_idx = rtree_index.Index()
@@ -175,7 +194,7 @@ for partner, leaders in team_leaders.items():
 
     assigned = {}
     frontiers = {}
-    allocated = {l: 0 for l in leaders}
+    allocated = {leader: 0 for leader in leaders}
 
     for lid, sid in zip(leaders, seed_ids):
         assigned[sid] = lid
@@ -185,7 +204,11 @@ for partner, leaders in team_leaders.items():
     def get_local_neighbors(idx):
         geom = sub_gdf.loc[idx].geometry
         candidates = list(geom_idx.intersection(geom.bounds))
-        return [i for i in candidates if i != idx and i not in assigned and geom.touches(sub_gdf.loc[i].geometry)]
+        return [
+            i
+            for i in candidates
+            if i != idx and i not in assigned and geom.touches(sub_gdf.loc[i].geometry)
+        ]
 
     active = set(leaders)
     while active:
@@ -206,12 +229,14 @@ for partner, leaders in team_leaders.items():
                     active.remove(lid)
                     break
 
-    id_to_leader = {sub_gdf.loc[i, 'orig_id']: lid for i, lid in assigned.items()}
-    gdf.loc[gdf.partner == partner, 'leader'] = gdf[gdf.partner == partner].index.map(id_to_leader).fillna("Unassigned")
+    id_to_leader = {sub_gdf.loc[i, "orig_id"]: lid for i, lid in assigned.items()}
+    gdf.loc[gdf.partner == partner, "leader"] = (
+        gdf[gdf.partner == partner].index.map(id_to_leader).fillna("Unassigned")
+    )
 
 # === Export or visualize ===
-output_path = os.path.join( "files", "sectors.json")
-gdf.to_file(output_path, driver='GeoJSON')
+output_path = os.path.join("files", "sectors.json")
+gdf.to_file(output_path, driver="GeoJSON")
 # gdf.to_file("kharkiv_mine_risk_leader_partitioned.json", driver='GeoJSON')
 
 # # === Visualization ===

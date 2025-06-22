@@ -76,9 +76,7 @@ def seed_users():
             try:
                 print(f"Adding Team Lead user {letter}{i}...")
                 team_lead_user = user_repository.insert_one(user_data)
-                print(
-                    f"Team Lead user {letter}{i} added with ID: {team_lead_user.id}"
-                )
+                print(f"Team Lead user {letter}{i} added with ID: {team_lead_user.id}")
                 session.commit()
             except Exception as e:
                 print(f"Error adding Team Lead user {letter}{i}: {e}")
