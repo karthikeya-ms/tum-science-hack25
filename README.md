@@ -81,7 +81,7 @@ git push -u origin react-frontend
    ```
 3. Install dependencies:
    ```bash
-   pip install fastapi uvicorn geopandas shapely rtree matplotlib
+   pip install fastapi uvicorn geopandas shapely rtree matplotlib openpyxl fpdf
    ```
 4. Start the FastAPI server (map is generated & cached at startup):
    ```bash
@@ -100,7 +100,7 @@ git push -u origin react-frontend
    ```
 2. Install npm dependencies:
    ```bash
-   npm install
+   npm install react-chartjs-2 chart.js jspdf leaflet 
    ```
 3. Start the development server:
    ```bash
