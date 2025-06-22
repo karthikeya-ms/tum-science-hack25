@@ -2,9 +2,9 @@ import os
 import io
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import StreamingResponse, Response
+from fastapi.responses import StreamingResponse, Response, FileResponse
 import json
-
+from pdf_report_generator import create_pdf
 from map_generator import generate_risk_map, generate_risk_map_for_partner, _build_gdf
 
 app = FastAPI()
@@ -204,3 +204,8 @@ def get_leaders_info():
         }
     except Exception as e:
         raise HTTPException(500, f"Error processing leader data: {str(e)}")
+
+@app.post("/generate-pdf")
+def generate_pdf():
+    output_path = create_pdf()
+    return FileResponse(output_path, filename="ngo_activity_report.pdf", media_type="application/pdf")
