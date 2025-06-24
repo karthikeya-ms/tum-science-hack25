@@ -1,0 +1,10 @@
+LICENSE
+README.md
+pyproject.toml
+src/HumanitarianDemining/__init__.py
+src/HumanitarianDemining/main.py
+src/HumanitarianDemining.egg-info/PKG-INFO
+src/HumanitarianDemining.egg-info/SOURCES.txt
+src/HumanitarianDemining.egg-info/dependency_links.txt
+src/HumanitarianDemining.egg-info/requires.txt
+src/HumanitarianDemining.egg-info/top_level.txt
